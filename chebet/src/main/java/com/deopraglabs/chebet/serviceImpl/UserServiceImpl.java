@@ -1,6 +1,8 @@
 package com.deopraglabs.chebet.serviceImpl;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -27,31 +29,32 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
-    
+
     @Override
     public ResponseEntity<String> signUp(Map<String, String> requestMap) {
         log.info("Inside signup {}", requestMap);
         try {
-            if(validateSignUpFields(requestMap)) {
+            if (validateSignUpFields(requestMap)) {
                 User user = userRepository.findByEmail(requestMap.get("email"));
-                if(Objects.isNull(user)) {
+                if (Objects.isNull(user)) {
                     user = userRepository.findByCpf(requestMap.get("cpf"));
                     if (Objects.isNull(user)) {
                         user = userRepository.findByPhoneNumber(requestMap.get("phoneNumber"));
                         if (Objects.isNull(user)) {
                             userRepository.save(getUserFromMap(requestMap));
-                            return ChebetUtils.getResponseEntity("Successfully registered", HttpStatus.OK);
+                            return ChebetUtils.getResponseEntity("Successfully registered!", HttpStatus.OK);
                         } else {
-
+                            return ChebetUtils.getResponseEntity("Phone number already exists.",
+                                    HttpStatus.BAD_REQUEST);
                         }
                     } else {
-
+                        return ChebetUtils.getResponseEntity("CPF already exists.", HttpStatus.BAD_REQUEST);
                     }
                 } else {
-                    
+                    return ChebetUtils.getResponseEntity("Email already exists.", HttpStatus.BAD_REQUEST);
                 }
             } else {
-
+                return ChebetUtils.getResponseEntity(Constants.INVALID_DATA, HttpStatus.BAD_REQUEST);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,7 +63,10 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean validateSignUpFields(Map<String, String> requestMap) {
-        if (true) { 
+        if (requestMap.containsKey("firstName") && requestMap.containsKey("lastName") && requestMap.containsKey("email")
+                && requestMap.containsKey("birthDate") && requestMap.containsKey("cpf")
+                && requestMap.containsKey("gender") && requestMap.containsKey("phoneNumber")
+                && requestMap.containsKey("password")) {
             return true;
         }
         return false;
@@ -77,8 +83,18 @@ public class UserServiceImpl implements UserService {
         user.setGender(Gender.valueOf(requestMap.get("gender")));
         user.setPhoneNumber(requestMap.get("phoneNumber"));
         user.setPassword(passwordEncoder.encode(requestMap.get("password")));
-        user.setRole(Role.Better);
+        user.setRole(Role.valueOf(requestMap.get("role")));
         user.setActive(false);
         return user;
+    }
+
+    @Override
+    public ResponseEntity<List<User>> findAll() {
+        try {
+            return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

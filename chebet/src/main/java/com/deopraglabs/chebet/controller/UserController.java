@@ -1,5 +1,6 @@
 package com.deopraglabs.chebet.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.deopraglabs.chebet.model.UserWrapper;
+import com.deopraglabs.chebet.model.User;
 import com.deopraglabs.chebet.service.UserService;
 import com.deopraglabs.chebet.utils.ChebetUtils;
 import com.deopraglabs.chebet.utils.Constants;
@@ -24,9 +25,14 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping
-    public ResponseEntity<List<UserWrapper>> getAllUsers() {
-        return null;
+    @GetMapping("/findAll")
+    public ResponseEntity<List<User>> getAllUsers() {
+        try {
+            return userService.findAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<List<User>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PostMapping("/signup")

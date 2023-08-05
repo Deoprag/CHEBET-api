@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
@@ -51,6 +53,7 @@ public class User implements Serializable {
     @Column(name = "phone_number", length = 11, nullable = false, unique = true)
     private String phoneNumber;
     
+    @JsonIgnore
     @Column(name = "password", nullable = false)
     private String password;
     

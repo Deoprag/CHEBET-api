@@ -13,4 +13,6 @@ public interface UserService {
     public ResponseEntity<List<User>> findAll();
 
     public ResponseEntity<User> findById(int id);
+
+    public ResponseEntity<String> delete(int id);
 }

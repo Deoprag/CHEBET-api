@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
                             return ChebetUtils.getResponseEntity("Successfully registered!", HttpStatus.OK);
                         } else {
                             return ChebetUtils.getResponseEntity("Phone number already exists.",
-                                    HttpStatus.BAD_REQUEST);
+                            HttpStatus.BAD_REQUEST);
                         }
                     } else {
                         return ChebetUtils.getResponseEntity("CPF already exists.", HttpStatus.BAD_REQUEST);
@@ -65,14 +66,14 @@ public class UserServiceImpl implements UserService {
     
     private boolean validateSignUpFields(Map<String, String> requestMap) {
         if (requestMap.containsKey("firstName") && requestMap.containsKey("lastName") && requestMap.containsKey("email")
-                && requestMap.containsKey("birthDate") && requestMap.containsKey("cpf")
-                && requestMap.containsKey("gender") && requestMap.containsKey("phoneNumber")
-                && requestMap.containsKey("password")) {
+        && requestMap.containsKey("birthDate") && requestMap.containsKey("cpf")
+        && requestMap.containsKey("gender") && requestMap.containsKey("phoneNumber")
+        && requestMap.containsKey("password")) {
             return true;
         }
         return false;
     }
-
+    
     private User getUserFromMap(Map<String, String> requestMap) throws ParseException {
         User user = new User();
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -88,7 +89,7 @@ public class UserServiceImpl implements UserService {
         user.setActive(false);
         return user;
     }
-
+    
     @Override
     public ResponseEntity<List<User>> findAll() {
         try {
@@ -101,16 +102,37 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public ResponseEntity<User> findById(int id) {
+        log.info("Inside findById {}", id);
         try {
             Optional<User> user = userRepository.findById(id);
-            if(user.isPresent()) {
+            if (user.isPresent()) {
                 return new ResponseEntity<User>(user.get(), HttpStatus.OK);
             } else {
-                return new ResponseEntity<User>(user.get(), HttpStatus.NOT_FOUND);
+                return new ResponseEntity<User>(new User(), HttpStatus.NOT_FOUND);
+            }
+        } catch (NoSuchElementException nsee) {
+            return new ResponseEntity<User>(new User(), HttpStatus.NOT_FOUND);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<User>(new User(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
+    @Override
+    public ResponseEntity<String> delete(int id) {
+        log.info("Inside delete {}", id);
+        try {
+            Optional<User> user = userRepository.findById(id);
+            if (user.isPresent()) {
+                userRepository.delete(user.get());
+                return new ResponseEntity<String>("User deleted successfully", HttpStatus.OK);
+            } else {
+                return ChebetUtils.getResponseEntity("User not found.", HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<User>(new User(), HttpStatus.NOT_FOUND);
+        return ChebetUtils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

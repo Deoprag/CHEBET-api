@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/findAll")
+    @GetMapping("/")
     public ResponseEntity<List<User>> getAllUsers() {
         try {
             return userService.findAll();
@@ -33,6 +34,16 @@ public class UserController {
             e.printStackTrace();
         }
         return new ResponseEntity<List<User>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUser(@PathVariable Integer id) {
+        try {
+            return userService.findById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<User>(new User(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PostMapping("/signup")

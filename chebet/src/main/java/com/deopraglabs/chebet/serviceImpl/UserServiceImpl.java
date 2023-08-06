@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserService {
         }
         return ChebetUtils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
+    
     private boolean validateSignUpFields(Map<String, String> requestMap) {
         if (requestMap.containsKey("firstName") && requestMap.containsKey("lastName") && requestMap.containsKey("email")
                 && requestMap.containsKey("birthDate") && requestMap.containsKey("cpf")
@@ -96,5 +97,20 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
+    @Override
+    public ResponseEntity<User> findById(int id) {
+        try {
+            Optional<User> user = userRepository.findById(id);
+            if(user.isPresent()) {
+                return new ResponseEntity<User>(user.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<User>(user.get(), HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<User>(new User(), HttpStatus.NOT_FOUND);
     }
 }

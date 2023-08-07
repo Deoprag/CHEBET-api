@@ -20,7 +20,6 @@ public class ChebetUtils {
     public static LocalDate stringToLocalDate(String stringLocalDate) throws ParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate localDate = LocalDate.parse(stringLocalDate, formatter);
-        System.out.println("LocalDate: " + localDate);
         return localDate;
     }
 }

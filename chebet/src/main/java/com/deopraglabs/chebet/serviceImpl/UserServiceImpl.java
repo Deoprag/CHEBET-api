@@ -77,6 +77,9 @@ public class UserServiceImpl implements UserService {
     private User getUserFromMap(Map<String, String> requestMap) throws ParseException {
         User user = new User();
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if(requestMap.containsKey("id")) {
+            user.setId(Integer.parseInt(requestMap.get("id")));
+        }
         user.setFirstName(requestMap.get("firstName"));
         user.setLastName(requestMap.get("lastName"));
         user.setEmail(requestMap.get("email"));
@@ -86,7 +89,6 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(requestMap.get("phoneNumber"));
         user.setPassword(passwordEncoder.encode(requestMap.get("password")));
         user.setRole(Role.valueOf(requestMap.get("role")));
-        user.setActive(false);
         return user;
     }
     
@@ -123,10 +125,10 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> delete(int id) {
         log.info("Inside delete {}", id);
         try {
-            Optional<User> user = userRepository.findById(id);
-            if (user.isPresent()) {
-                userRepository.delete(user.get());
-                return new ResponseEntity<String>("User deleted successfully", HttpStatus.OK);
+            Optional<User> optUser = userRepository.findById(id);
+            if (optUser.isPresent()) {
+                userRepository.delete(optUser.get());
+                return new ResponseEntity<String>("User deleted successfully.", HttpStatus.OK);
             } else {
                 return ChebetUtils.getResponseEntity("User not found.", HttpStatus.NOT_FOUND);
             }
@@ -134,5 +136,50 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
         return ChebetUtils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
+    @Override
+    public ResponseEntity<String> update(Map<String, String> requestMap) {
+        log.info("Inside update {}", requestMap);
+        try {
+            Optional<User> optUser = userRepository.findById(Integer.parseInt(requestMap.get("id")));
+            if (optUser.isPresent()) {
+                userRepository.save(updateUserFromMap(optUser.get(), requestMap));
+                return new ResponseEntity<String>("User updated successfully.", HttpStatus.OK);
+            } else {
+                return ChebetUtils.getResponseEntity("User not found.", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ChebetUtils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public User updateUserFromMap(User user, Map<String, String> requestMap) throws ParseException {
+        if(requestMap.containsKey("firstName")) {
+            user.setFirstName(requestMap.get("firstName"));
+        }
+        if (requestMap.containsKey("lastName")) {
+            user.setLastName(requestMap.get("lastName"));
+        }
+        if (requestMap.containsKey("email")) {
+            user.setEmail(requestMap.get("email"));
+        }
+        if(requestMap.containsKey("birthDate")) {
+            user.setBirthDate(ChebetUtils.stringToLocalDate(requestMap.get("birthDate")));
+        }
+        if(requestMap.containsKey("gender")) {
+            user.setGender(Gender.valueOf(requestMap.get("gender")));
+        }
+        if(requestMap.containsKey("phoneNumber")) {
+            user.setPhoneNumber(requestMap.get("phoneNumber"));
+        }
+        if(requestMap.containsKey("role")) {
+            user.setRole(Role.valueOf(requestMap.get("role")));
+        }
+        if(requestMap.containsKey("active")) {
+            user.setActive(Boolean.parseBoolean(requestMap.get("active")));
+        }
+        return user;
     }
 }

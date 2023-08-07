@@ -15,4 +15,7 @@ public interface UserService {
     public ResponseEntity<User> findById(int id);
 
     public ResponseEntity<String> delete(int id);
+
+    public ResponseEntity<String> update(Map<String, String> requestMap);
+
 }

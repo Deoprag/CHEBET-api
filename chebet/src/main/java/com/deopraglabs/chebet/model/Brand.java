@@ -23,8 +23,8 @@ public class Brand implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private short id;
     
     @Column(name = "name")

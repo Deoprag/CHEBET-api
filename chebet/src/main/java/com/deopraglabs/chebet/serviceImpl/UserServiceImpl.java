@@ -104,7 +104,6 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public ResponseEntity<User> findById(int id) {
-        log.info("Inside findById {}", id);
         try {
             Optional<User> user = userRepository.findById(id);
             if (user.isPresent()) {

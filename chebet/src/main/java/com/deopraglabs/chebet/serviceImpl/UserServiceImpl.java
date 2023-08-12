@@ -77,9 +77,6 @@ public class UserServiceImpl implements UserService {
     private User getUserFromMap(Map<String, String> requestMap) throws ParseException {
         User user = new User();
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        if(requestMap.containsKey("id")) {
-            user.setId(Integer.parseInt(requestMap.get("id")));
-        }
         user.setFirstName(requestMap.get("firstName"));
         user.setLastName(requestMap.get("lastName"));
         user.setEmail(requestMap.get("email"));

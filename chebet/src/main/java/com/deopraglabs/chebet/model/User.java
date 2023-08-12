@@ -61,6 +61,9 @@ public class User implements Serializable {
     @Column(name = "role", nullable = false)
     private Role role;
 
+    @Column(name = "balance")
+    private Float balance;
+
     @Column(name = "active", nullable = false)
     private boolean active = false;
 }

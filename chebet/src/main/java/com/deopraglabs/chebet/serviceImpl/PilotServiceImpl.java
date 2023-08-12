@@ -1,11 +1,11 @@
 package com.deopraglabs.chebet.serviceImpl;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.apache.tomcat.util.bcel.classfile.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,23 +64,30 @@ public class PilotServiceImpl implements PilotService {
 
     @Override
     public ResponseEntity<List<Pilot>> findAll() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
+
+
 
     @Override
     public ResponseEntity<Pilot> findById(int id) {
-
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
+
+
 
     @Override
     public ResponseEntity<String> delete(int id) {
-        log.info("Inside delete {}", id);
-
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'delete'");
     }
 
     @Override
     public ResponseEntity<String> update(Map<String, String> requestMap) {
-        log.info("Inside update {}", requestMap)
-        
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
     public boolean validateRegisterFields(Map<String, String> requestMap) {
@@ -93,9 +100,7 @@ public class PilotServiceImpl implements PilotService {
 
     public Pilot getPilotFromMap(Map<String, String> requestMap) throws ParseException {
         Pilot pilot = new Pilot();
-        if (requestMap.containsKey("id")) {
-            pilot.setId(Integer.parseInt(requestMap.get("id")));
-        }
+        pilot.setId(Integer.parseInt(requestMap.get("id")));
         pilot.setName(requestMap.get("name"));
         if (requestMap.containsKey("nickname")) {
             pilot.setNickname(requestMap.get("nickname"));
@@ -107,7 +112,14 @@ public class PilotServiceImpl implements PilotService {
         }
         Optional<Car> car = carRepository.findById(Integer.parseInt(requestMap.get("car")));
         if (car.isPresent()) {
-            pilot.setCar(car.get());
+            List<Car> carList = new ArrayList<>();
+            // try {
+            //     carList = carRepository.getCarsByPilot(pilot.getId());
+            // } catch (Exception e) {  
+            //     e.printStackTrace();
+            // }                                            Trocar p/ updatePilot
+            carList.add(car.get());
+            pilot.setCarList(carList);
         }
         return pilot;
     }

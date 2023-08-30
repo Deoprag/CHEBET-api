@@ -31,6 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
+    
+    @Autowired
+    EmailUtils emailUtils;
 
     @Override
     public ResponseEntity<String> signUp(Map<String, String> requestMap) {
@@ -43,8 +46,13 @@ public class UserServiceImpl implements UserService {
                     if (Objects.isNull(user)) {
                         user = userRepository.findByPhoneNumber(requestMap.get("phoneNumber"));
                         if (Objects.isNull(user)) {
-                            userRepository.save(getUserFromMap(requestMap));
-                            return ChebetUtils.getResponseEntity("Successfully registered!", HttpStatus.OK);
+                            if (emailUtils.isValid(requestMap.get("email")) {
+                                userRepository.save(getUserFromMap(requestMap));
+                                return ChebetUtils.getResponseEntity("Successfully registered!", HttpStatus.OK);
+                            } else {
+                                return ChebetUtils.getResponseEntity("Invalid email.",
+                                HttpStatus.BAD_REQUEST);  
+                            }
                         } else {
                             return ChebetUtils.getResponseEntity("Phone number already exists.",
                             HttpStatus.BAD_REQUEST);

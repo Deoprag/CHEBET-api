@@ -2,7 +2,6 @@ package br.com.chebet.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -13,9 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -45,8 +42,4 @@ public class Pilot implements Serializable {
     @ManyToOne
     @JoinColumn(name = "team_id", nullable = false)
     private Team team;
-
-    @OneToOne
-    @JoinColumn(name = "coach_id", nullable = false, unique = true)
-    private Coach coach;
 }

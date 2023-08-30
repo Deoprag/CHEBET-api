@@ -1,6 +1,7 @@
 package br.com.chebet.serviceImpl;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -172,5 +173,35 @@ public class UserServiceImpl implements UserService {
             user.setActive(Boolean.parseBoolean(requestMap.get("active")));
         }
         return user;
+    }
+
+    public boolean isUserRepositoryWorking() {
+        try {    
+            User user = new User();
+            user.setFirstName("John");
+            user.setLastName("Doe");
+            user.setEmail("john.doe@mail.com");
+            user.setBirthDate(LocalDate.of(2000, 2, 20));
+            user.setCpf("12345678910");
+            user.setGender(Gender.Masculino);
+            user.setPhoneNumber("41999999999");
+            PasswordEncoder encoder = new BCryptPasswordEncoder();
+            user.setPassword(encoder.encode("12345678"));
+            user.setActive(false);
+            System.out.println("Sets OK");
+            userRepository.save(user);
+            System.out.println("Salvo OK");
+            user.setActive(true);
+            userRepository.save(user);
+            System.out.println("Atualizado OK");
+            userRepository.delete(user);
+            System.out.println("Apagado OK");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 }

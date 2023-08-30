@@ -18,4 +18,6 @@ public interface UserService {
 
     public ResponseEntity<String> update(Map<String, String> requestMap);
 
+    public boolean isUserRepositoryWorking();
+
 }

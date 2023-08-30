@@ -34,12 +34,9 @@ public class Bet implements Serializable {
     @Column(name = "bet_type")
     private BetType betType;
 
-    @Column(name = "bet_amount", nullable = false)
-    private float betAmount;
-
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "transaction_id", nullable = false)
+    private Transaction transaction;
     
     @ManyToOne
     @JoinColumn(name = "championship_id", nullable = false)

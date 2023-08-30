@@ -76,4 +76,14 @@ public class UserController {
         }
         return ChebetUtils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @GetMapping("/isWorking")
+    public ResponseEntity<String> isUserRepositoryWorking() {
+        if(userService.isUserRepositoryWorking()) {
+            return new ResponseEntity<String>("Everything working OK", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("Not Working", HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+    }
 }

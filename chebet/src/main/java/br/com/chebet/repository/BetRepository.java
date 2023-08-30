@@ -2,8 +2,8 @@ package br.com.chebet.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.com.chebet.model.Car;
+import br.com.chebet.model.Bet;
 
-public interface CarRepository extends JpaRepository<Car, Integer>{
+public interface BetRepository extends JpaRepository<Bet, Integer>{
     
 }

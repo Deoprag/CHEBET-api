@@ -1,5 +1,6 @@
 package br.com.chebet.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -21,7 +22,7 @@ import lombok.Data;
 @DynamicUpdate
 @DynamicInsert
 @Table(name = "TB_Transaction")
-public class Transaction {
+public class Transaction implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

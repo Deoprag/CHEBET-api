@@ -1,7 +1,6 @@
 package br.com.chebet.serviceImpl;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -20,7 +19,6 @@ import br.com.chebet.repository.TeamRepository;
 import br.com.chebet.service.PilotService;
 import br.com.chebet.utils.ChebetUtils;
 import br.com.chebet.utils.Constants;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

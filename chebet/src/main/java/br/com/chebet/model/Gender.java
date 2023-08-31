@@ -3,9 +3,9 @@ package br.com.chebet.model;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Gender {
-    Masculino,
-    Feminino,
-    Outro;
+    Male,
+    Female,
+    Other;
 
     @Override
     @JsonValue

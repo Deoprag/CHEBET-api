@@ -6,4 +6,5 @@ import br.com.chebet.model.Championship;
 
 public interface ChampionshipRepository extends JpaRepository<Championship, Integer>{
     
+    public Championship findByName(String name);
 }

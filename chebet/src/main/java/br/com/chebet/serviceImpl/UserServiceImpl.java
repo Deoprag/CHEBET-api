@@ -22,7 +22,7 @@ import br.com.chebet.repository.UserRepository;
 import br.com.chebet.service.UserService;
 import br.com.chebet.utils.ChebetUtils;
 import br.com.chebet.utils.Constants;
-
+import br.com.chebet.utils.EmailUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -31,9 +31,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
-    
-    @Autowired
-    EmailUtils emailUtils;
 
     @Override
     public ResponseEntity<String> signUp(Map<String, String> requestMap) {
@@ -46,11 +43,11 @@ public class UserServiceImpl implements UserService {
                     if (Objects.isNull(user)) {
                         user = userRepository.findByPhoneNumber(requestMap.get("phoneNumber"));
                         if (Objects.isNull(user)) {
-                            if (emailUtils.isValid(requestMap.get("email")) {
+                            if (EmailUtils.isEmail(requestMap.get("email"))) {
                                 userRepository.save(getUserFromMap(requestMap));
                                 return ChebetUtils.getResponseEntity("Successfully registered!", HttpStatus.OK);
                             } else {
-                                return ChebetUtils.getResponseEntity("Invalid email.",
+                                return ChebetUtils.getResponseEntity("Invalid email address.",
                                 HttpStatus.BAD_REQUEST);  
                             }
                         } else {
@@ -61,7 +58,7 @@ public class UserServiceImpl implements UserService {
                         return ChebetUtils.getResponseEntity("CPF already exists.", HttpStatus.BAD_REQUEST);
                     }
                 } else {
-                    return ChebetUtils.getResponseEntity("Email already exists.", HttpStatus.BAD_REQUEST);
+                    return ChebetUtils.getResponseEntity("Email address already exists.", HttpStatus.BAD_REQUEST);
                 }
             } else {
                 return ChebetUtils.getResponseEntity(Constants.INVALID_DATA, HttpStatus.BAD_REQUEST);
@@ -190,8 +187,8 @@ public class UserServiceImpl implements UserService {
             user.setLastName("Doe");
             user.setEmail("john.doe@mail.com");
             user.setBirthDate(LocalDate.of(2000, 2, 20));
-            user.setCpf("12345678910");
-            user.setGender(Gender.Masculino);
+            user.setCpf("14848328683");
+            user.setGender(Gender.Male);
             user.setPhoneNumber("41999999999");
             PasswordEncoder encoder = new BCryptPasswordEncoder();
             user.setPassword(encoder.encode("12345678"));

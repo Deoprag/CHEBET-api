@@ -1,6 +1,7 @@
 package br.com.chebet.model;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;

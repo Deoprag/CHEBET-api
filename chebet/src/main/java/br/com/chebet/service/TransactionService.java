@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import br.com.chebet.model.Transaction;
 
+@Service
 public interface TransactionService {
     public ResponseEntity<List<Transaction>> findAll();
 

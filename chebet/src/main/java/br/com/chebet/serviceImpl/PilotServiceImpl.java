@@ -1,8 +1,10 @@
 package br.com.chebet.serviceImpl;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.com.chebet.model.Car;
+import br.com.chebet.model.Color;
 import br.com.chebet.model.Pilot;
+import br.com.chebet.model.Preparer;
 import br.com.chebet.model.Team;
 import br.com.chebet.repository.CarRepository;
 import br.com.chebet.repository.PilotRepository;
@@ -41,14 +45,8 @@ public class PilotServiceImpl implements PilotService {
             if (validateRegisterFields(requestMap)) {
                 Optional<Team> team = teamRepository.findById(Integer.parseInt(requestMap.get("team")));
                 if (team.isPresent()) {
-                    Optional<Car> car = carRepository.findById(Integer.parseInt(requestMap.get("car")));
-                    if (car.isPresent()) {
-                        pilotRepository.save(getPilotFromMap(requestMap));
-                        return ChebetUtils.getResponseEntity("Successfully registered!", HttpStatus.OK);
-                    } else {
-                        return ChebetUtils.getResponseEntity("Car doesn't exists.",
-                            HttpStatus.BAD_REQUEST);
-                    }
+                    pilotRepository.save(getPilotFromMap(requestMap));
+                    return ChebetUtils.getResponseEntity("Successfully registered!", HttpStatus.OK);
                 } else {
                     return ChebetUtils.getResponseEntity("Team doesn't exists.",
                             HttpStatus.BAD_REQUEST);
@@ -111,4 +109,31 @@ public class PilotServiceImpl implements PilotService {
         return pilot;
     }
 
+    @Override
+    public boolean isPilotRepositoryWorking() {
+        try {    
+            Pilot pilot = new Pilot();
+            pilot.setName("Pedro");
+            pilot.setNickname("Pelucia");
+            pilot.setBirthDate(LocalDate.of(2004, 2, 27));
+            Optional<Team> team = teamRepository.findById(1);
+            if (team.isPresent()) {
+                pilot.setTeam(team.get());
+            }
+            System.out.println("Sets OK");
+            pilotRepository.save(pilot);
+            System.out.println("Salvo OK");
+            pilot.setNickname("Pelucio");
+            pilotRepository.save(pilot);
+            System.out.println("Atualizado OK");
+            pilotRepository.delete(pilot);
+            System.out.println("Apagado OK");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;    
+    }
+    
 }

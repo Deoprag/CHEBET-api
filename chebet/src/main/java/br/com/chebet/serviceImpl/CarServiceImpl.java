@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import br.com.chebet.model.Car;
 import br.com.chebet.model.Color;
@@ -17,6 +18,7 @@ import br.com.chebet.repository.PilotRepository;
 import br.com.chebet.repository.PreparerRepository;
 import br.com.chebet.service.CarService;
 
+@Service
 public class CarServiceImpl implements CarService{
 
     @Autowired
@@ -83,5 +85,4 @@ public class CarServiceImpl implements CarService{
 
         return true;    
     }
-    
 }

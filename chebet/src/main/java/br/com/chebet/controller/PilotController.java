@@ -77,4 +77,13 @@ public class PilotController {
         }
         return ChebetUtils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @GetMapping("/isWorking")
+    public ResponseEntity<String> isPilotRepositoryWorking() {
+        if(pilotService.isPilotRepositoryWorking()) {
+            return new ResponseEntity<String>("Everything working OK", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<String>("Not Working", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

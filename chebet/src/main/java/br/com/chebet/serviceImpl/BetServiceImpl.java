@@ -62,7 +62,7 @@ public class BetServiceImpl implements BetService {
             if (!Objects.isNull(obj)) {
                 bet.setTransaction(obj.get());
             }
-            bet.setChampionship(championshipRepository.findByName("Chebet Arrancadas 2023"));
+            bet.setChampionship(championshipRepository.findByName("Campeonato 1"));
             System.out.println("Sets OK");
             betRepository.save(bet);
             System.out.println("Salvo OK");

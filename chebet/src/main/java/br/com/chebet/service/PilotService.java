@@ -19,4 +19,6 @@ public interface PilotService {
     public ResponseEntity<String> delete(int id);
 
     public ResponseEntity<String> update(Map<String, String> requestMap);
+
+    public boolean isPilotRepositoryWorking();
 }

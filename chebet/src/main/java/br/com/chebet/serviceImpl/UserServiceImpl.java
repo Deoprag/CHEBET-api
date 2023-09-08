@@ -187,7 +187,7 @@ public class UserServiceImpl implements UserService {
             user.setLastName("Doe");
             user.setEmail("john.doe@mail.com");
             user.setBirthDate(LocalDate.of(2000, 2, 20));
-            user.setCpf("14848328683");
+            user.setCpf("12345678910");
             user.setGender(Gender.Male);
             user.setPhoneNumber("41999999999");
             PasswordEncoder encoder = new BCryptPasswordEncoder();

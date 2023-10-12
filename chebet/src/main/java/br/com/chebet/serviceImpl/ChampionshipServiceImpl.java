@@ -55,7 +55,7 @@ public class ChampionshipServiceImpl implements ChampionshipService{
             System.out.println("Sets OK");
             championshipRepository.save(championship);
             System.out.println("Salvo OK");
-            championship.setCloseDateTime(LocalDateTime.of(2023, 8, 18, 18, 0, 0, 0));
+            championship.setEndDateTime(LocalDateTime.of(2023, 8, 18, 18, 0, 0, 0));
             championshipRepository.save(championship);
             System.out.println("Atualizado OK");
             championshipRepository.delete(championship);

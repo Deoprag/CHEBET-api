@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.chebet.model.Gender;
+import br.com.chebet.model.Role;
 import br.com.chebet.model.User;
 import br.com.chebet.repository.UserRepository;
 import br.com.chebet.service.UserService;
@@ -48,11 +49,11 @@ public class UserServiceImpl implements UserService {
                                 return ChebetUtils.getResponseEntity("Successfully registered!", HttpStatus.OK);
                             } else {
                                 return ChebetUtils.getResponseEntity("Invalid email address.",
-                                HttpStatus.BAD_REQUEST);  
+                                        HttpStatus.BAD_REQUEST);
                             }
                         } else {
                             return ChebetUtils.getResponseEntity("Phone number already exists.",
-                            HttpStatus.BAD_REQUEST);
+                                    HttpStatus.BAD_REQUEST);
                         }
                     } else {
                         return ChebetUtils.getResponseEntity("CPF already exists.", HttpStatus.BAD_REQUEST);
@@ -69,22 +70,29 @@ public class UserServiceImpl implements UserService {
         return ChebetUtils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
     
+    @Override
+    public ResponseEntity<String> login(Map<String, String> requestMap) {
+        return null;
+    }
+
     private boolean validateSignUpFields(Map<String, String> requestMap) {
         if (requestMap.containsKey("firstName") && requestMap.containsKey("lastName") && requestMap.containsKey("email")
-        && requestMap.containsKey("birthDate") && requestMap.containsKey("cpf")
-        && requestMap.containsKey("gender") && requestMap.containsKey("phoneNumber")
-        && requestMap.containsKey("password")) {
+                && requestMap.containsKey("role")
+                && requestMap.containsKey("birthDate") && requestMap.containsKey("cpf")
+                && requestMap.containsKey("gender") && requestMap.containsKey("phoneNumber")
+                && requestMap.containsKey("password")) {
             return true;
         }
         return false;
     }
-    
+
     private User getUserFromMap(Map<String, String> requestMap) throws ParseException {
         User user = new User();
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         user.setFirstName(requestMap.get("firstName"));
         user.setLastName(requestMap.get("lastName"));
         user.setEmail(requestMap.get("email"));
+        user.setRole(Role.valueOf(requestMap.get("role")));
         user.setBirthDate(ChebetUtils.stringToLocalDate(requestMap.get("birthDate")));
         user.setCpf(requestMap.get("cpf"));
         user.setGender(Gender.valueOf(requestMap.get("gender")));
@@ -92,7 +100,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(requestMap.get("password")));
         return user;
     }
-    
+
     @Override
     public ResponseEntity<List<User>> findAll() {
         try {
@@ -102,7 +110,7 @@ public class UserServiceImpl implements UserService {
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    
+
     @Override
     public ResponseEntity<User> findById(int id) {
         try {
@@ -114,13 +122,13 @@ public class UserServiceImpl implements UserService {
             }
         } catch (NoSuchElementException nsee) {
             return new ResponseEntity<User>(new User(), HttpStatus.NOT_FOUND);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         return new ResponseEntity<User>(new User(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    
+
     @Override
     public ResponseEntity<String> delete(int id) {
         log.info("Inside delete {}", id);
@@ -137,7 +145,7 @@ public class UserServiceImpl implements UserService {
         }
         return ChebetUtils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    
+
     @Override
     public ResponseEntity<String> update(Map<String, String> requestMap) {
         log.info("Inside update {}", requestMap);
@@ -156,36 +164,40 @@ public class UserServiceImpl implements UserService {
     }
 
     public User updateUserFromMap(User user, Map<String, String> requestMap) throws ParseException {
-        if(requestMap.containsKey("firstName")) {
+        if (requestMap.containsKey("firstName")) {
             user.setFirstName(requestMap.get("firstName"));
         }
         if (requestMap.containsKey("lastName")) {
             user.setLastName(requestMap.get("lastName"));
         }
+        if (requestMap.containsKey("role")) {
+            user.setRole(Role.valueOf(requestMap.get("role")));
+        }
         if (requestMap.containsKey("email")) {
             user.setEmail(requestMap.get("email"));
         }
-        if(requestMap.containsKey("birthDate")) {
+        if (requestMap.containsKey("birthDate")) {
             user.setBirthDate(ChebetUtils.stringToLocalDate(requestMap.get("birthDate")));
         }
-        if(requestMap.containsKey("gender")) {
+        if (requestMap.containsKey("gender")) {
             user.setGender(Gender.valueOf(requestMap.get("gender")));
         }
-        if(requestMap.containsKey("phoneNumber")) {
+        if (requestMap.containsKey("phoneNumber")) {
             user.setPhoneNumber(requestMap.get("phoneNumber"));
         }
-        if(requestMap.containsKey("active")) {
+        if (requestMap.containsKey("active")) {
             user.setActive(Boolean.parseBoolean(requestMap.get("active")));
         }
         return user;
     }
 
     public boolean isUserRepositoryWorking() {
-        try {    
+        try {
             User user = new User();
             user.setFirstName("John");
             user.setLastName("Doe");
             user.setEmail("john.doe@mail.com");
+            user.setRole(Role.User);
             user.setBirthDate(LocalDate.of(2000, 2, 20));
             user.setCpf("12345678910");
             user.setGender(Gender.Male);
@@ -209,4 +221,5 @@ public class UserServiceImpl implements UserService {
 
         return true;
     }
+
 }

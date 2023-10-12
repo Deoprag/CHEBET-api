@@ -7,6 +7,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,10 +30,24 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    AuthenticationManager authenticationManager;
+
     @PostMapping("/signup")
     public ResponseEntity<String> signUp(@RequestBody(required = true) Map<String, String> requestMap) {
         try {
             return userService.signUp(requestMap);
+        } catch (Exception e) {
+            return ChebetUtils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody(required = true) Map<String, String> requestMap) {
+        try {
+            var usernamePassword = new UsernamePasswordAuthenticationToken(requestMap.get("login"), requestMap.get("password"));
+            var auth = this.authenticationManager.authenticate(usernamePassword);
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ChebetUtils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -36,8 +36,8 @@ public class Championship implements Serializable {
     @Column(name = "date_time")
     private LocalDateTime dateTime;
 
-    @Column(name = "close_date_time")
-    private LocalDateTime closeDateTime;
+    @Column(name = "end_date_time")
+    private LocalDateTime endDateTime;
 
     @ManyToMany
     private List<Pilot> pilots;

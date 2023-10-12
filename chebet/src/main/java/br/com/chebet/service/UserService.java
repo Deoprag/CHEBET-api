@@ -12,6 +12,8 @@ import br.com.chebet.model.User;
 public interface UserService {
     public ResponseEntity<String> signUp(Map<String, String> requestMap);
 
+    public ResponseEntity<String> login(Map<String, String> requestMap);
+    
     public ResponseEntity<List<User>> findAll();
 
     public ResponseEntity<User> findById(int id);

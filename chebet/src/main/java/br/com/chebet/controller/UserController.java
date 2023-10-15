@@ -71,6 +71,16 @@ public class UserController {
         return new ResponseEntity<User>(new User(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     
+    @GetMapping("/findByCpf/{cpf}")
+    public ResponseEntity<User> getByCpf(@PathVariable String cpf) {
+        try {
+            return userService.findByCpf(cpf);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<User>(new User(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable int id) {
         try {

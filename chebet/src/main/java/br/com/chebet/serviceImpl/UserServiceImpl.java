@@ -155,7 +155,28 @@ public class UserServiceImpl implements UserService {
         try {
             Optional<User> user = userRepository.findById(id);
             if (user.isPresent()) {
+                user.get().setPassword("");
                 return new ResponseEntity<User>(user.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<User>(new User(), HttpStatus.NOT_FOUND);
+            }
+        } catch (NoSuchElementException nsee) {
+            return new ResponseEntity<User>(new User(), HttpStatus.NOT_FOUND);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<User>(new User(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<User> findByCpf(String cpf) {
+        log.info("Inside findByCpf {}");
+        try {
+            User user = userRepository.findByCpf(cpf);
+            if (user != null) {
+                user.setPassword("");
+                return new ResponseEntity<User>(user, HttpStatus.OK);
             } else {
                 return new ResponseEntity<User>(new User(), HttpStatus.NOT_FOUND);
             }
@@ -175,7 +196,7 @@ public class UserServiceImpl implements UserService {
             Optional<User> optUser = userRepository.findById(id);
             if (optUser.isPresent()) {
                 userRepository.delete(optUser.get());
-                return new ResponseEntity<String>("User deleted successfully.", HttpStatus.OK);
+                return ChebetUtils.getResponseEntity("Successfully deleted!", HttpStatus.OK);
             } else {
                 return ChebetUtils.getResponseEntity("User not found.", HttpStatus.NOT_FOUND);
             }
@@ -192,7 +213,7 @@ public class UserServiceImpl implements UserService {
             Optional<User> optUser = userRepository.findById(Integer.parseInt(requestMap.get("id")));
             if (optUser.isPresent()) {
                 userRepository.save(updateUserFromMap(optUser.get(), requestMap));
-                return new ResponseEntity<String>("User updated successfully.", HttpStatus.OK);
+                return ChebetUtils.getResponseEntity("Successfully updated!", HttpStatus.OK);
             } else {
                 return ChebetUtils.getResponseEntity("User not found.", HttpStatus.NOT_FOUND);
             }
@@ -203,20 +224,11 @@ public class UserServiceImpl implements UserService {
     }
 
     public User updateUserFromMap(User user, Map<String, String> requestMap) throws ParseException {
-        if (requestMap.containsKey("firstName")) {
-            user.setFirstName(requestMap.get("firstName"));
-        }
-        if (requestMap.containsKey("lastName")) {
-            user.setLastName(requestMap.get("lastName"));
-        }
         if (requestMap.containsKey("role")) {
             user.setRole(Role.valueOf(requestMap.get("role")));
         }
         if (requestMap.containsKey("email")) {
             user.setEmail(requestMap.get("email"));
-        }
-        if (requestMap.containsKey("birthDate")) {
-            user.setBirthDate(ChebetUtils.stringToLocalDate(requestMap.get("birthDate")));
         }
         if (requestMap.containsKey("gender")) {
             user.setGender(Gender.valueOf(requestMap.get("gender")));

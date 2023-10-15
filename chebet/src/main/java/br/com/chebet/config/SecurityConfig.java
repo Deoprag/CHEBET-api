@@ -1,4 +1,4 @@
-package br.com.chebet.JWT;
+package br.com.chebet.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

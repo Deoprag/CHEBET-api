@@ -12,10 +12,16 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import br.com.chebet.config.JwtFilter;
+import br.com.chebet.config.JwtUtil;
+import br.com.chebet.config.UserDetailService;
 import br.com.chebet.model.Gender;
 import br.com.chebet.model.Role;
 import br.com.chebet.model.User;
@@ -32,6 +38,21 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    UserDetailService userDetailService;
+
+    @Autowired
+    JwtUtil jwtUtil;
+
+    @Autowired
+    JwtFilter jwtFilter;
+
+    @Autowired
+    EmailUtils emailUtils;
 
     @Override
     public ResponseEntity<String> signUp(Map<String, String> requestMap) {
@@ -72,12 +93,30 @@ public class UserServiceImpl implements UserService {
     
     @Override
     public ResponseEntity<String> login(Map<String, String> requestMap) {
-        return null;
+        log.info("Insise login {}");
+        try {
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(requestMap.get("login"), requestMap.get("password")));
+            if (auth.isAuthenticated()) {
+                if (userDetailService.getUserDetail().isActive()) {
+                    return new ResponseEntity<String>(
+                            "{\"token\":\""
+                                    + jwtUtil.generateToken(userDetailService.getUserDetail().getCpf(),
+                                            userDetailService.getUserDetail().getRole())
+                                    + "\"}",
+                            HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<String>("{\"message\":\"" + "Wait for admin approval." + "\"}", HttpStatus.BAD_REQUEST);
+                }
+            }
+        } catch (Exception e) {
+            log.error("{}", e);
+        }
+        return new ResponseEntity<String>("{\"message\":\"" + "Bad credentials." + "\"}", HttpStatus.BAD_REQUEST);
     }
 
     private boolean validateSignUpFields(Map<String, String> requestMap) {
         if (requestMap.containsKey("firstName") && requestMap.containsKey("lastName") && requestMap.containsKey("email")
-                && requestMap.containsKey("role")
                 && requestMap.containsKey("birthDate") && requestMap.containsKey("cpf")
                 && requestMap.containsKey("gender") && requestMap.containsKey("phoneNumber")
                 && requestMap.containsKey("password")) {
@@ -92,7 +131,7 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(requestMap.get("firstName"));
         user.setLastName(requestMap.get("lastName"));
         user.setEmail(requestMap.get("email"));
-        user.setRole(Role.valueOf(requestMap.get("role")));
+        user.setRole(Role.User);
         user.setBirthDate(ChebetUtils.stringToLocalDate(requestMap.get("birthDate")));
         user.setCpf(requestMap.get("cpf"));
         user.setGender(Gender.valueOf(requestMap.get("gender")));

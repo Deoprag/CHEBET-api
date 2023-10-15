@@ -1,4 +1,4 @@
-package br.com.chebet.JWT;
+package br.com.chebet.config;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -25,9 +25,9 @@ public class UserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("Inside loadUserByUsername {}", username);
-        userDetail = userRepository.findByEmail(username);
+        userDetail = userRepository.findByCpf(username);
         if (!Objects.isNull(userDetail)) {
-            return new User(userDetail.getEmail(), userDetail.getPassword(), new ArrayList<>());
+            return new User(userDetail.getCpf(), userDetail.getPassword(), new ArrayList<>());
         } else {
             throw new UsernameNotFoundException("User not found.");
         }

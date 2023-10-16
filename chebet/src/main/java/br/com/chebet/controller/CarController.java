@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.chebet.service.CarService;
+import br.com.chebet.utils.ChebetUtils;
 
 @RestController
 @RequestMapping("/api/car")
@@ -19,9 +20,9 @@ public class CarController {
     @GetMapping("/isWorking")
     public ResponseEntity<String> isCarRepositoryWorking() {
         if(carService.isCarRepositoryWorking()) {
-            return new ResponseEntity<String>("Everything working OK", HttpStatus.OK);
+            return ChebetUtils.getResponseEntity("Everything working OK", HttpStatus.OK);
         } else {
-            return new ResponseEntity<String>("Not Working", HttpStatus.INTERNAL_SERVER_ERROR);
+            return ChebetUtils.getResponseEntity("Not Working", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

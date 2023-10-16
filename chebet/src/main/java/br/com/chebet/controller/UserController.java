@@ -104,9 +104,9 @@ public class UserController {
     @GetMapping("/isWorking")
     public ResponseEntity<String> isUserRepositoryWorking() {
         if(userService.isUserRepositoryWorking()) {
-            return new ResponseEntity<String>("Everything working OK", HttpStatus.OK);
+            return ChebetUtils.getResponseEntity("Everything working OK", HttpStatus.OK);
         } else {
-            return new ResponseEntity<String>("Not Working", HttpStatus.INTERNAL_SERVER_ERROR);
+            return ChebetUtils.getResponseEntity("Not Working", HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
     }

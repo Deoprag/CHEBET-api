@@ -99,20 +99,20 @@ public class UserServiceImpl implements UserService {
                     new UsernamePasswordAuthenticationToken(requestMap.get("login"), requestMap.get("password")));
             if (auth.isAuthenticated()) {
                 if (userDetailService.getUserDetail().isActive()) {
-                    return new ResponseEntity<String>(
+                    return ChebetUtils.getResponseEntity(
                             "{\"token\":\""
                                     + jwtUtil.generateToken(userDetailService.getUserDetail().getCpf(),
                                             userDetailService.getUserDetail().getRole())
                                     + "\"}",
                             HttpStatus.OK);
                 } else {
-                    return new ResponseEntity<String>("{\"message\":\"" + "Wait for admin approval." + "\"}", HttpStatus.BAD_REQUEST);
+                    return ChebetUtils.getResponseEntity("{\"message\":\"" + "Wait for admin approval." + "\"}", HttpStatus.BAD_REQUEST);
                 }
             }
         } catch (Exception e) {
             log.error("{}", e);
         }
-        return new ResponseEntity<String>("{\"message\":\"" + "Bad credentials." + "\"}", HttpStatus.BAD_REQUEST);
+        return ChebetUtils.getResponseEntity("{\"message\":\"" + "Bad credentials." + "\"}", HttpStatus.BAD_REQUEST);
     }
 
     private boolean validateSignUpFields(Map<String, String> requestMap) {

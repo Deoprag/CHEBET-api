@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 public class ChebetUtils {
 
     public static ResponseEntity<String> getResponseEntity(String responseMessage, HttpStatus httpStatus) {
-        return ChebetUtils.getResponseEntity("{\"message\":\"" + responseMessage + "\"}", httpStatus);
+        return new ResponseEntity<String>("{\"message\":\"" + responseMessage + "\"}", httpStatus);
     }
 
     public static LocalDate stringToLocalDate(String stringLocalDate) throws ParseException {

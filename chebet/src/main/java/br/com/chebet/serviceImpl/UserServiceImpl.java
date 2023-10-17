@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
                     new UsernamePasswordAuthenticationToken(requestMap.get("login"), requestMap.get("password")));
             if (auth.isAuthenticated()) {
                 if (userDetailService.getUserDetail().isActive()) {
-                    return ChebetUtils.getResponseEntity(
+                    return new ResponseEntity<String>(
                             "{\"token\":\""
                                     + jwtUtil.generateToken(userDetailService.getUserDetail().getCpf(),
                                             userDetailService.getUserDetail().getRole())

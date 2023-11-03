@@ -86,9 +86,9 @@ public class UserController {
         try {
             return userService.delete(id);
         } catch (Exception e) {
-            return ChebetUtils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
         }
-        
+        return ChebetUtils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PutMapping("/")

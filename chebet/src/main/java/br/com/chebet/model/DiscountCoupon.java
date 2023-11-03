@@ -7,12 +7,9 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -20,25 +17,19 @@ import lombok.Data;
 @Data
 @DynamicUpdate
 @DynamicInsert
-@Table(name = "TB_Bet")
-public class Bet implements Serializable {
-    
+@Table(name = "TB_Discount_Coupon")
+public class DiscountCoupon implements Serializable{
+        
     private static final long serialVersionUID = 1L;
-
+    
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Enumerated
-    @Column(name = "bet_type")
-    private BetType betType;
+    @Column(name = "name", length = 12, nullable = false)
+    private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "transaction_id", nullable = false)
-    private Transaction transaction;
-    
-    @ManyToOne
-    @JoinColumn(name = "championship_id", nullable = false)
-    private Championship championship;
+    @Column(name = "discount", nullable = false)
+    private Short discount;
 }

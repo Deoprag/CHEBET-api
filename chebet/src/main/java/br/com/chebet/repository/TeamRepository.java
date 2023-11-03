@@ -6,4 +6,6 @@ import br.com.chebet.model.Team;
 
 public interface TeamRepository extends JpaRepository<Team, Integer> {
     
+    public Team findByName(String name);
+
 }

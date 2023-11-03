@@ -42,4 +42,7 @@ public class Pilot implements Serializable {
     @ManyToOne
     @JoinColumn(name = "team_id", nullable = false)
     private Team team;
+
+    @Column(name = "active", nullable = false, columnDefinition = "bit(1) default 0")
+    private boolean active = false;
 }

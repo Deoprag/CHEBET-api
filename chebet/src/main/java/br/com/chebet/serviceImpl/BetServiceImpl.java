@@ -1,16 +1,19 @@
 package br.com.chebet.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.com.chebet.model.Bet;
 import br.com.chebet.model.BetType;
+import br.com.chebet.model.Championship;
 import br.com.chebet.model.Transaction;
 import br.com.chebet.repository.BetRepository;
 import br.com.chebet.repository.ChampionshipRepository;
@@ -31,8 +34,27 @@ public class BetServiceImpl implements BetService {
 
     @Override
     public ResponseEntity<List<Bet>> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        try {
+            return new ResponseEntity<>(betRepository.findAll(), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<List<Bet>> findAllByChampionship(int championshipId) {
+        try {
+            Optional<Championship> championship = championshipRepository.findById(championshipId);
+            if(!Objects.isNull(championship)) {
+                return new ResponseEntity<>(betRepository.findAllByChampionship(championship.get()), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override

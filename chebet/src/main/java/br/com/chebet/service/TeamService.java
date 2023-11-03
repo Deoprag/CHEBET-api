@@ -14,6 +14,8 @@ public interface TeamService {
 
     public ResponseEntity<Team> findById(int id);
 
+    public ResponseEntity<String> registerTeam(Map<String, String> requestMap);
+
     public ResponseEntity<String> delete(int id);
 
     public ResponseEntity<String> update(Map<String, String> requestMap);

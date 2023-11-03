@@ -1,7 +1,6 @@
 package br.com.chebet.serviceImpl;
 
-import java.time.LocalDateTime;
-import java.time.Month;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import br.com.chebet.model.BetType;
 import br.com.chebet.model.Championship;
 import br.com.chebet.repository.ChampionshipRepository;
 import br.com.chebet.service.ChampionshipService;
@@ -51,11 +49,11 @@ public class ChampionshipServiceImpl implements ChampionshipService{
         try {    
             Championship championship = new Championship();
             championship.setName("Chebet Arrancadas 2023");
-            championship.setDateTime(LocalDateTime.of(2023, 8, 15, 18, 0, 0, 0));
+            championship.setDate(LocalDate.of(2023, 8, 15));
             System.out.println("Sets OK");
             championshipRepository.save(championship);
             System.out.println("Salvo OK");
-            championship.setEndDateTime(LocalDateTime.of(2023, 8, 18, 18, 0, 0, 0));
+            championship.setEndDate(LocalDate.of(2023, 8, 18));
             championshipRepository.save(championship);
             System.out.println("Atualizado OK");
             championshipRepository.delete(championship);

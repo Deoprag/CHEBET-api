@@ -4,7 +4,6 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import br.com.chebet.model.Car;
-import br.com.chebet.model.Color;
 import br.com.chebet.model.Pilot;
-import br.com.chebet.model.Preparer;
 import br.com.chebet.model.Team;
 import br.com.chebet.repository.CarRepository;
 import br.com.chebet.repository.PilotRepository;

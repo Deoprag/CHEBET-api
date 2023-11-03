@@ -12,6 +12,8 @@ import br.com.chebet.model.Bet;
 public interface BetService {
     public ResponseEntity<List<Bet>> findAll();
 
+    public ResponseEntity<List<Bet>> findAllByChampionship(int championshipId);
+
     public ResponseEntity<Bet> findById(int id);
 
     public ResponseEntity<String> delete(int id);

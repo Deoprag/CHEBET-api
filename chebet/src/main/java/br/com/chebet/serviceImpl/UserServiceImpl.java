@@ -66,21 +66,26 @@ public class UserServiceImpl implements UserService {
                         user = userRepository.findByPhoneNumber(requestMap.get("phoneNumber"));
                         if (Objects.isNull(user)) {
                             if (EmailUtils.isEmail(requestMap.get("email"))) {
-                                userRepository.save(getUserFromMap(requestMap));
-                                return ChebetUtils.getResponseEntity("Successfully registered!", HttpStatus.OK);
-                            } else {
-                                return ChebetUtils.getResponseEntity("Invalid email address.",
+                                if (ChebetUtils.isCpf(requestMap.get("cpf"))) {
+                                    userRepository.save(getUserFromMap(requestMap));
+                                    return ChebetUtils.getResponseEntity("Registrado com sucesso!", HttpStatus.OK);
+                                } else {
+                                    return ChebetUtils.getResponseEntity("O CPF informado é inválido!",
                                         HttpStatus.BAD_REQUEST);
+                                }
+                            } else {
+                                return ChebetUtils.getResponseEntity("O e-mail informado é inválido!",
+                                    HttpStatus.BAD_REQUEST);
                             }
                         } else {
-                            return ChebetUtils.getResponseEntity("Phone number already exists.",
-                                    HttpStatus.BAD_REQUEST);
+                            return ChebetUtils.getResponseEntity("O celular informado já está em uso!",
+                                HttpStatus.BAD_REQUEST);
                         }
                     } else {
-                        return ChebetUtils.getResponseEntity("CPF already exists.", HttpStatus.BAD_REQUEST);
+                        return ChebetUtils.getResponseEntity("O CPF informado já está em uso!", HttpStatus.BAD_REQUEST);
                     }
                 } else {
-                    return ChebetUtils.getResponseEntity("Email address already exists.", HttpStatus.BAD_REQUEST);
+                    return ChebetUtils.getResponseEntity("O e-mail informado já está em uso!", HttpStatus.BAD_REQUEST);
                 }
             } else {
                 return ChebetUtils.getResponseEntity(Constants.INVALID_DATA, HttpStatus.BAD_REQUEST);
@@ -106,13 +111,13 @@ public class UserServiceImpl implements UserService {
                                     + "\"}",
                             HttpStatus.OK);
                 } else {
-                    return ChebetUtils.getResponseEntity("{\"message\":\"" + "Wait for admin approval." + "\"}", HttpStatus.BAD_REQUEST);
+                    return ChebetUtils.getResponseEntity("Usuário desativado.", HttpStatus.BAD_REQUEST);
                 }
             }
         } catch (Exception e) {
             log.error("{}", e);
         }
-        return ChebetUtils.getResponseEntity("{\"message\":\"" + "Bad credentials." + "\"}", HttpStatus.BAD_REQUEST);
+        return ChebetUtils.getResponseEntity("Usuário ou senha incorretos!", HttpStatus.BAD_REQUEST);
     }
 
     private boolean validateSignUpFields(Map<String, String> requestMap) {
@@ -196,16 +201,16 @@ public class UserServiceImpl implements UserService {
             Optional<User> optUser = userRepository.findById(id);
             if (optUser.isPresent()) {
                 userRepository.delete(optUser.get());
-                return ChebetUtils.getResponseEntity("Successfully deleted!", HttpStatus.OK);
+                return ChebetUtils.getResponseEntity("Apagado com sucesso!", HttpStatus.OK);
             } else {
-                return ChebetUtils.getResponseEntity("User not found.", HttpStatus.NOT_FOUND);
+                return ChebetUtils.getResponseEntity("Usuário não encontrado.", HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return ChebetUtils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
+    
     @Override
     public ResponseEntity<String> update(Map<String, String> requestMap) {
         log.info("Inside update {}", requestMap);
@@ -213,9 +218,9 @@ public class UserServiceImpl implements UserService {
             Optional<User> optUser = userRepository.findById(Integer.parseInt(requestMap.get("id")));
             if (optUser.isPresent()) {
                 userRepository.save(updateUserFromMap(optUser.get(), requestMap));
-                return ChebetUtils.getResponseEntity("Successfully updated!", HttpStatus.OK);
+                return ChebetUtils.getResponseEntity("Atualizado com sucesso!", HttpStatus.OK);
             } else {
-                return ChebetUtils.getResponseEntity("User not found.", HttpStatus.NOT_FOUND);
+                return ChebetUtils.getResponseEntity("Usuário não encontrado.", HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
             e.printStackTrace();

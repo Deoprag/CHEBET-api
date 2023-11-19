@@ -2,6 +2,7 @@ package br.com.chebet.utils;
 
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,12 @@ public class ChebetUtils {
         LocalDate localDate = LocalDate.parse(stringLocalDate, formatter);
         return localDate;
     }
+
+    public static boolean isOverage(LocalDate birthDate) {
+        Period period = Period.between(birthDate, LocalDate.now());
+        return period.getYears() >= 18;
+    }
+
 
     public static boolean isCpf(String cpf) {
         if (cpf == null || cpf.length() != 11 || cpf.matches("^(\\d)\\1*$")) {

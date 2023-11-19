@@ -45,10 +45,10 @@ public class Car implements Serializable {
     private Color color;
 
     @ManyToOne
-    @JoinColumn(name = "pilot_id", nullable = false)
+    @JoinColumn(name = "pilot_id", nullable = false, unique = true)
     private Pilot pilot;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "preparer_id", nullable = false)
     private Preparer preparer;
 }

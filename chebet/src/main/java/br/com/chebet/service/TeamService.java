@@ -20,5 +20,4 @@ public interface TeamService {
 
     public ResponseEntity<String> update(Map<String, String> requestMap);
 
-    public boolean isTeamRepositoryWorking();
 }

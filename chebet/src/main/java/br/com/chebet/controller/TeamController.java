@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -66,12 +65,4 @@ public class TeamController {
         }
     }
 
-    @GetMapping("/isWorking")
-    public ResponseEntity<String> isTeamRepositoryWorking() {
-        if(teamService.isTeamRepositoryWorking()) {
-            return ChebetUtils.getResponseEntity("Everything working OK", HttpStatus.OK);
-        } else {
-            return ChebetUtils.getResponseEntity("Not Working", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }

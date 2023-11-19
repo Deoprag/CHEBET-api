@@ -3,13 +3,12 @@ package br.com.chebet.model;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum BetType {
-    Simple_Victory,
-    Broken_Car,
-    Simple_Position,
-    Double_Position,
-    Less_Time,
-    Pass_Round,
-    Avg_Race_Time;
+    Vitoria_Simples,
+    Carro_Quebrado,
+    Posicao_Simples,
+    Posicao_Dupla,
+    Menos_Tempo,
+    Tempo_Medio;
 
     @Override
     @JsonValue

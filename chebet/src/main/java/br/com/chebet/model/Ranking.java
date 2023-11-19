@@ -13,13 +13,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 
 @Entity
 @Data
 @DynamicUpdate
 @DynamicInsert
-@Table(name = "TB_Ranking")
+@Table(name = "TB_Ranking", uniqueConstraints = @UniqueConstraint(columnNames = {"championship_id", "position"}))
 public class Ranking implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -32,4 +33,13 @@ public class Ranking implements Serializable {
     @ManyToOne
     @JoinColumn(name = "championship_id", nullable = false)
     private Championship championship;
+
+    @ManyToOne
+    @JoinColumn(name = "pilot_id", nullable = false)
+    private Pilot pilot;
+
+    @Column(name = "position", nullable = false)
+    private Short position;
+
+
 }

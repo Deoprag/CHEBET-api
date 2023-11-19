@@ -44,26 +44,4 @@ public class ChampionshipServiceImpl implements ChampionshipService{
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
-    @Override
-    public boolean isChampionshipRepositoryWorking() {
-        try {    
-            Championship championship = new Championship();
-            championship.setName("Chebet Arrancadas 2023");
-            championship.setDate(LocalDate.of(2023, 8, 15));
-            System.out.println("Sets OK");
-            championshipRepository.save(championship);
-            System.out.println("Salvo OK");
-            championship.setEndDate(LocalDate.of(2023, 8, 18));
-            championshipRepository.save(championship);
-            System.out.println("Atualizado OK");
-            championshipRepository.delete(championship);
-            System.out.println("Apagado OK");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;
-    }
-    
 }

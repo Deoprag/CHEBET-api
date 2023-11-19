@@ -18,5 +18,4 @@ public interface TransactionService {
 
     public ResponseEntity<String> update(Map<String, String> requestMap);
 
-    public boolean isTransactionRepositoryWorking();
 }

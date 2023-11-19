@@ -10,6 +10,9 @@ import br.com.chebet.model.Car;
 
 @Service
 public interface CarService {
+
+    public ResponseEntity<String> register(Map<String, String> requestMap);
+
     public ResponseEntity<List<Car>> findAll();
 
     public ResponseEntity<Car> findById(int id);
@@ -18,5 +21,4 @@ public interface CarService {
 
     public ResponseEntity<String> update(Map<String, String> requestMap);
 
-    public boolean isCarRepositoryWorking();
 }

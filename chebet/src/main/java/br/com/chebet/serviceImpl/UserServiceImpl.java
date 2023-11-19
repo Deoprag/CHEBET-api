@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -66,12 +67,17 @@ public class UserServiceImpl implements UserService {
                         user = userRepository.findByPhoneNumber(requestMap.get("phoneNumber"));
                         if (Objects.isNull(user)) {
                             if (EmailUtils.isEmail(requestMap.get("email"))) {
-                                if (ChebetUtils.isCpf(requestMap.get("cpf"))) {
-                                    userRepository.save(getUserFromMap(requestMap));
-                                    return ChebetUtils.getResponseEntity("Registrado com sucesso!", HttpStatus.OK);
+                                if(ChebetUtils.isOverage(ChebetUtils.stringToLocalDate(requestMap.get("birthDate")))) {
+                                    if (ChebetUtils.isCpf(requestMap.get("cpf"))) {
+                                        userRepository.save(getUserFromMap(requestMap));
+                                        return ChebetUtils.getResponseEntity("Registrado com sucesso!", HttpStatus.OK);
+                                    } else {
+                                        return ChebetUtils.getResponseEntity("O CPF informado é inválido!",
+                                            HttpStatus.BAD_REQUEST);
+                                    }
                                 } else {
-                                    return ChebetUtils.getResponseEntity("O CPF informado é inválido!",
-                                        HttpStatus.BAD_REQUEST);
+                                    return ChebetUtils.getResponseEntity("Data de nascimento inválida. Por favor, certifique-se de que você é maior de idade!",
+                                        HttpStatus.BAD_REQUEST);   
                                 }
                             } else {
                                 return ChebetUtils.getResponseEntity("O e-mail informado é inválido!",
@@ -205,6 +211,8 @@ public class UserServiceImpl implements UserService {
             } else {
                 return ChebetUtils.getResponseEntity("Usuário não encontrado.", HttpStatus.NOT_FOUND);
             }
+        } catch (DataIntegrityViolationException e) {
+            return ChebetUtils.getResponseEntity("Não é possível excluir este usuario, pois ele está associado a outros dados no sistema.", HttpStatus.CONFLICT);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -229,21 +237,11 @@ public class UserServiceImpl implements UserService {
     }
 
     public User updateUserFromMap(User user, Map<String, String> requestMap) throws ParseException {
-        if (requestMap.containsKey("role")) {
-            user.setRole(Role.valueOf(requestMap.get("role")));
-        }
-        if (requestMap.containsKey("email")) {
-            user.setEmail(requestMap.get("email"));
-        }
-        if (requestMap.containsKey("gender")) {
-            user.setGender(Gender.valueOf(requestMap.get("gender")));
-        }
-        if (requestMap.containsKey("phoneNumber")) {
-            user.setPhoneNumber(requestMap.get("phoneNumber"));
-        }
-        if (requestMap.containsKey("active")) {
-            user.setActive(Boolean.parseBoolean(requestMap.get("active")));
-        }
+        if (requestMap.containsKey("role")) user.setRole(Role.valueOf(requestMap.get("role")));
+        if (requestMap.containsKey("email")) user.setEmail(requestMap.get("email"));
+        if (requestMap.containsKey("gender")) user.setGender(Gender.valueOf(requestMap.get("gender")));
+        if (requestMap.containsKey("phoneNumber")) user.setPhoneNumber(requestMap.get("phoneNumber"));
+        if (requestMap.containsKey("active")) user.setActive(Boolean.parseBoolean(requestMap.get("active")));
         return user;
     }
 

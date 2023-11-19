@@ -10,7 +10,11 @@ import br.com.chebet.model.Preparer;
 
 @Service
 public interface PreparerService {
+    public ResponseEntity<String> register(Map<String, String> requestMap);
+
     public ResponseEntity<List<Preparer>> findAll();
+
+    public ResponseEntity<List<Preparer>> findByTeam(int teamId);
 
     public ResponseEntity<Preparer> findById(int id);
 
@@ -18,5 +22,4 @@ public interface PreparerService {
 
     public ResponseEntity<String> update(Map<String, String> requestMap);
 
-    public boolean isPreparerRepositoryWorking();
 }

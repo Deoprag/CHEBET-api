@@ -33,7 +33,7 @@ public class Pilot implements Serializable {
     @Column(name = "name", length = 150, nullable = false)
     private String name;
 
-    @Column(name = "nickname", length = 50)
+    @Column(name = "nickname", length = 50, nullable = false, unique = true)
     private String nickname;
 
     @Column(name = "birth_date", nullable = false)

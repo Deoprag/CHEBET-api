@@ -74,31 +74,5 @@ public class BetServiceImpl implements BetService {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
-
-    @Override
-    public boolean isBetRepositoryWorking() {
-        try {    
-            Bet bet = new Bet();
-            bet.setBetType(BetType.Simple_Victory);
-            Optional<Transaction> obj = transactionRepository.findById(1);
-            if (!Objects.isNull(obj)) {
-                bet.setTransaction(obj.get());
-            }
-            bet.setChampionship(championshipRepository.findByName("Campeonato 1"));
-            System.out.println("Sets OK");
-            betRepository.save(bet);
-            System.out.println("Salvo OK");
-            bet.setBetType(BetType.Less_Time);
-            betRepository.save(bet);
-            System.out.println("Atualizado OK");
-            betRepository.delete(bet);
-            System.out.println("Apagado OK");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;
-    }
     
 }

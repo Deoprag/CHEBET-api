@@ -78,12 +78,13 @@ public class PilotController {
         return ChebetUtils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @GetMapping("/isWorking")
-    public ResponseEntity<String> isPilotRepositoryWorking() {
-        if(pilotService.isPilotRepositoryWorking()) {
-            return ChebetUtils.getResponseEntity("Everything working OK", HttpStatus.OK);
-        } else {
-            return ChebetUtils.getResponseEntity("Not Working", HttpStatus.INTERNAL_SERVER_ERROR);
+    @GetMapping("/findByTeam/{id}")
+    public ResponseEntity<List<Pilot>> findByTeam(@PathVariable int id) {
+        try {
+            return pilotService.findByTeam(id);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return new ResponseEntity<List<Pilot>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

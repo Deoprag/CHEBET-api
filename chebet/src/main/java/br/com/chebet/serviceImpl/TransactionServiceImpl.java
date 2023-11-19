@@ -46,28 +46,5 @@ public class TransactionServiceImpl implements TransactionService{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
-
-    @Override
-    public boolean isTransactionRepositoryWorking() {
-        try {    
-            Transaction transaction = new Transaction();
-            transaction.setTransactionType(TransactionType.Bet);
-            transaction.setValue(50);
-            transaction.setUser(userRepository.findByCpf("14848328683"));
-            System.out.println("Sets OK");
-            transactionRepository.save(transaction);
-            System.out.println("Salvo OK");
-            transaction.setValue(500);
-            transactionRepository.save(transaction);
-            System.out.println("Atualizado OK");
-            transactionRepository.delete(transaction);
-            System.out.println("Apagado OK");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;    
-    }
     
 }

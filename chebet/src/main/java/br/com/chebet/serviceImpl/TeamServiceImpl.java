@@ -127,24 +127,4 @@ public class TeamServiceImpl implements TeamService{
         return team;
     }
 
-    @Override
-    public boolean isTeamRepositoryWorking() {
-        try {    
-            Team team = new Team();
-            team.setName("Time do pedro");
-            System.out.println("Sets OK");
-            teamRepository.save(team);
-            System.out.println("Salvo OK");
-            team.setName("Time do Pedrão");
-            teamRepository.save(team);  
-            System.out.println("Atualizado OK");
-            teamRepository.delete(team);
-            System.out.println("Apagado OK");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;    
-    }
 }

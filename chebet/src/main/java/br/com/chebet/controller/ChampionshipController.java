@@ -17,12 +17,4 @@ public class ChampionshipController {
     @Autowired
     ChampionshipService championshipService;
 
-    @GetMapping("/isWorking")
-    public ResponseEntity<String> isChampionshipRepositoryWorking() {
-        if(championshipService.isChampionshipRepositoryWorking()) {
-            return ChebetUtils.getResponseEntity("Everything working OK", HttpStatus.OK);
-        } else {
-            return ChebetUtils.getResponseEntity("Not Working", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }

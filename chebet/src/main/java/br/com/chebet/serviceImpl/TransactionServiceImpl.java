@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class TransactionServiceImpl implements TransactionService{
+public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
     TransactionRepository transactionRepository;
@@ -25,20 +25,56 @@ public class TransactionServiceImpl implements TransactionService{
 
     @Override
     public ResponseEntity<List<Transaction>> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        try {
+            return new ResponseEntity<>(transactionRepository.findAll(), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<List<Transaction>> findAllByUser(int id) {
+        try {
+            Optional<User> optUser = userRepository.findById(id);
+            if (optUser.isPresent()) {
+                return new ResponseEntity<>(transactionRepository.findAllByUser(optUser.get()), HttpStatus.OK);
+            } else {
+                return ChebetUtils.getResponseEntity("Usuário não encontrado.", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
     public ResponseEntity<Transaction> findById(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+        try {
+            return new ResponseEntity(transactionRepository.findById(id), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new Transaction(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
     public ResponseEntity<String> delete(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        log.info("Inside delete {}", id);
+        try {
+            Optional<Transaction> optTransaction = transactionRepository.findById(id);
+            if (optTransaction.isPresent()) {
+                transactionRepository.delete(optTransaction.get());
+                return ChebetUtils.getResponseEntity("Apagada com sucesso!", HttpStatus.OK);
+            } else {
+                return ChebetUtils.getResponseEntity("Transação não encontrada.", HttpStatus.NOT_FOUND);
+            }
+        } catch (DataIntegrityViolationException e) {
+            return ChebetUtils.getResponseEntity("Não é possível excluir esta transação, pois ela está associada a outros dados no sistema.", HttpStatus.CONFLICT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ChebetUtils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -46,28 +82,4 @@ public class TransactionServiceImpl implements TransactionService{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
-
-    @Override
-    public boolean isTransactionRepositoryWorking() {
-        try {    
-            Transaction transaction = new Transaction();
-            transaction.setTransactionType(TransactionType.Bet);
-            transaction.setValue(50);
-            transaction.setUser(userRepository.findByCpf("14848328683"));
-            System.out.println("Sets OK");
-            transactionRepository.save(transaction);
-            System.out.println("Salvo OK");
-            transaction.setValue(500);
-            transactionRepository.save(transaction);
-            System.out.println("Atualizado OK");
-            transactionRepository.delete(transaction);
-            System.out.println("Apagado OK");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;    
-    }
-    
 }

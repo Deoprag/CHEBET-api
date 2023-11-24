@@ -49,6 +49,6 @@ public class Car implements Serializable {
     private Pilot pilot;
 
     @ManyToOne
-    @JoinColumn(name = "preparer_id", nullable = false)
+    @JoinColumn(name = "preparer_id")
     private Preparer preparer;
 }

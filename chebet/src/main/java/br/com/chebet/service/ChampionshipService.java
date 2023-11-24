@@ -10,6 +10,9 @@ import br.com.chebet.model.Championship;
 
 @Service
 public interface ChampionshipService {
+
+    public ResponseEntity<String> register(Map<String, String> requestMap);
+    
     public ResponseEntity<List<Championship>> findAll();
 
     public ResponseEntity<Championship> findById(int id);

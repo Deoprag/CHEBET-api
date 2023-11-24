@@ -92,8 +92,13 @@ public class CarServiceImpl implements CarService{
                             carRepository.save(updateCarFromMap(optCar.get(), requestMap));
                             return ChebetUtils.getResponseEntity("Atualizado com sucesso!", HttpStatus.OK);
                         } else {
-                            return ChebetUtils.getResponseEntity("Piloto já associado a outro carro!",
-                            HttpStatus.BAD_REQUEST);
+                            if (car.getId().equals(Integer.parseInt(requestMap.get("id")))) {
+                                carRepository.save(updateCarFromMap(optCar.get(), requestMap));
+                                return ChebetUtils.getResponseEntity("Atualizado com sucesso!", HttpStatus.OK);
+                            } else {
+                                return ChebetUtils.getResponseEntity("Piloto já associado a outro carro!",
+                                HttpStatus.BAD_REQUEST);
+                            }
                         }
                     } else {
                         return ChebetUtils.getResponseEntity("Já existe outro carro com esse apelido!",
@@ -195,8 +200,12 @@ public class CarServiceImpl implements CarService{
                 car.setPilot(pilot.get());
             }
             if (requestMap.containsKey("preparer")) {
-                Optional<Preparer> preparer = preparerRepository.findById(Integer.parseInt(requestMap.get("preparer")));
-                car.setPreparer(preparer.get());
+                if (Integer.parseInt(requestMap.get("preparer")) != 0) {
+                    Optional<Preparer> preparer = preparerRepository.findById(Integer.parseInt(requestMap.get("preparer")));
+                    car.setPreparer(preparer.get());
+                } else {
+                    car.setPreparer(null);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

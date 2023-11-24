@@ -14,9 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import br.com.chebet.model.Preparer;
+import br.com.chebet.model.Car;
 import br.com.chebet.model.Preparer;
 import br.com.chebet.model.Team;
+import br.com.chebet.repository.CarRepository;
 import br.com.chebet.repository.PreparerRepository;
 import br.com.chebet.repository.TeamRepository;
 import br.com.chebet.service.PreparerService;
@@ -33,6 +34,9 @@ public class PreparerServiceImpl implements PreparerService {
 
     @Autowired
     TeamRepository teamRepository;
+
+    @Autowired
+    CarRepository carRepository;
   
     @Override
     public ResponseEntity<List<Preparer>> findAll() {
@@ -125,8 +129,22 @@ public class PreparerServiceImpl implements PreparerService {
         try {
             Optional<Preparer> optPreparer = preparerRepository.findById(Integer.parseInt(requestMap.get("id")));
             if (optPreparer.isPresent()) {
-                preparerRepository.save(updatePreparerFromMap(optPreparer.get(), requestMap));
-                return ChebetUtils.getResponseEntity("Atualizado com sucesso!", HttpStatus.OK);
+                if (optPreparer.get().getTeam().getId().equals(Integer.parseInt(requestMap.get("team")))) {
+                    preparerRepository.save(updatePreparerFromMap(optPreparer.get(), requestMap));
+                    return ChebetUtils.getResponseEntity("Atualizado com sucesso!", HttpStatus.OK);
+                } else {
+                    try {
+                        List<Car> cars = carRepository.findCarsByPreparer(optPreparer.get());
+                        for (Car car : cars) {
+                            car.setPreparer(null);
+                            carRepository.save(car);
+                        }
+                        preparerRepository.save(updatePreparerFromMap(optPreparer.get(), requestMap));
+                        return ChebetUtils.getResponseEntity("Atualizado com sucesso!", HttpStatus.OK);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             } else {
                 return ChebetUtils.getResponseEntity("Preparador não encontrado.", HttpStatus.NOT_FOUND);
             }

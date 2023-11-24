@@ -5,12 +5,16 @@ select * from tb_team;
 select * from tb_pilot;
 select * from tb_preparer;
 select * from tb_car;
+select * from tb_championship;
+select * from tb_championship_pilots;
 
 describe tb_car;
 
+delete from tb_preparer where id = 11;
+
 delete from tb_user where id = 2;
 
-update tb_user set active = 1, role = 1 where id = 4;
+update tb_user set active = 1, role = 1 where id = 2;
 
 ------------------------------------------
 -- Carros com os pilotos e preparadores --

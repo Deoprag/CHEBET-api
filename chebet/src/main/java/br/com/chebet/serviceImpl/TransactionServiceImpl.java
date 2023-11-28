@@ -1,17 +1,25 @@
 package br.com.chebet.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.google.protobuf.Option;
+
 import br.com.chebet.model.Transaction;
-import br.com.chebet.model.TransactionType;
+import br.com.chebet.model.User;
 import br.com.chebet.repository.TransactionRepository;
 import br.com.chebet.repository.UserRepository;
 import br.com.chebet.service.TransactionService;
+import br.com.chebet.utils.ChebetUtils;
+import br.com.chebet.utils.Constants;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -40,22 +48,27 @@ public class TransactionServiceImpl implements TransactionService {
             if (optUser.isPresent()) {
                 return new ResponseEntity<>(transactionRepository.findAllByUser(optUser.get()), HttpStatus.OK);
             } else {
-                return ChebetUtils.getResponseEntity("Usuário não encontrado.", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
+    
     @Override
     public ResponseEntity<Transaction> findById(int id) {
         try {
-            return new ResponseEntity(transactionRepository.findById(id), HttpStatus.OK);
+            Optional<Transaction> optTransaction = transactionRepository.findById(id);
+            if (optTransaction.isPresent()) {
+                return new ResponseEntity<Transaction>(optTransaction.get(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<Transaction>(new Transaction(), HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(new Transaction(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<Transaction>(new Transaction(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
@@ -82,8 +95,4 @@ public class TransactionServiceImpl implements TransactionService {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
-<<<<<<< HEAD
-    
-=======
->>>>>>> 9714fa71418f1e3c0e9f58157895c2011660fa0e
 }

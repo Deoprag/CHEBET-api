@@ -1,7 +1,7 @@
 package br.com.chebet.model;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -34,10 +34,10 @@ public class Championship implements Serializable {
     private String name;
 
     @Column(name = "date_time")
-    private LocalDate date;
+    private LocalDateTime date;
 
     @Column(name = "end_date_time")
-    private LocalDate endDate;
+    private LocalDateTime endDate;
 
     @ManyToMany
     private List<Pilot> pilots;

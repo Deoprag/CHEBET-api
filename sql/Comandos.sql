@@ -16,6 +16,8 @@ delete from tb_user where id = 2;
 
 update tb_user set active = 1, role = 1 where id = 2;
 
+update tb_championship set end_date = null where id > 5;
+
 ------------------------------------------
 -- Carros com os pilotos e preparadores --
 ------------------------------------------

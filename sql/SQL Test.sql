@@ -117,18 +117,18 @@ values
 (3, 'Honda S2000', 'Foguete Japonês', 2022, 19, 9),
 (4, 'Aston Martin Vantage', 'Velocidade Britânica', 2018, 20, 10);
 
-insert into tb_championship (date_time, name)
+insert into tb_championship (date_time, end_date_time, name)
 values
-(current_date(), 'Arrancada Suprema'),
-(current_date(), 'Desafio das Pistas'),
-(current_date(), 'Copa Turbo Aceleração'),
-(current_date(), 'Grand Prix de Arrancada'),
-(current_date(), 'Corrida Turbocharge'),
-(current_date(), 'Chebet Oficial'),
-(current_date(), 'Grande Corrida Turbo'),
-(current_date(), 'Copa das Arrancadas Extremas'),
-(current_date(), 'Campeonato Velozes e Furiosos'),
-(current_date(), 'Armageddon 2023');
+(current_timestamp(), CURRENT_TIMESTAMP() + INTERVAL 2 HOUR , 'Arrancada Suprema'),
+(current_timestamp(), CURRENT_TIMESTAMP() + INTERVAL 6 HOUR , 'Desafio das Pistas'),
+(current_timestamp(), CURRENT_TIMESTAMP() + INTERVAL 2 DAY , 'Copa Turbo Aceleração'),
+(current_timestamp(), CURRENT_TIMESTAMP() + INTERVAL 2 DAY, 'Grand Prix de Arrancada'),
+(current_timestamp() - INTERVAL 7 DAY, CURRENT_TIMESTAMP() - INTERVAL 2 DAY,  'Corrida Turbocharge'),
+(current_timestamp(), null, 'Chebet Oficial'),
+(current_timestamp(), null, 'Grande Corrida Turbo'),
+(current_timestamp(), null, 'Copa das Arrancadas Extremas'),
+(current_timestamp(), null, 'Campeonato Velozes e Furiosos'),
+(current_timestamp(), null, 'Armageddon 2023');
 
 insert into tb_championship_pilots (championship_id, pilots_id)
 values

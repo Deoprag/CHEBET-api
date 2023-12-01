@@ -60,7 +60,7 @@ public class User implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "balance")
+    @Column(name = "balance", nullable = false)
     private Float balance;
 
     @Column(name = "active", nullable = false)

@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Role {
     User,
-    Admin;
+    Admin,
+    Deleted;
 
     @Override
     @JsonValue

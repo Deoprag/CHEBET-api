@@ -1,5 +1,6 @@
 package br.com.chebet.serviceImpl;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -206,8 +207,12 @@ public class UserServiceImpl implements UserService {
         try {
             Optional<User> optUser = userRepository.findById(id);
             if (optUser.isPresent()) {
-                userRepository.delete(optUser.get());
-                return ChebetUtils.getResponseEntity("Apagado com sucesso!", HttpStatus.OK);
+                if((optUser.get().getBalance().floatValue() == 0)) {
+                    userRepository.softDeleteUser((optUser.get().getId()));
+                    return ChebetUtils.getResponseEntity("Apagado com sucesso!", HttpStatus.OK);
+                } else {
+                    return ChebetUtils.getResponseEntity("Não é possível excluir o usuário devido ao saldo pendente em sua conta.", HttpStatus.CONFLICT);
+                }
             } else {
                 return ChebetUtils.getResponseEntity("Usuário não encontrado.", HttpStatus.NOT_FOUND);
             }

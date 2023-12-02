@@ -8,15 +8,16 @@ select * from tb_car;
 select * from tb_championship;
 select * from tb_championship_pilots;
 
-describe tb_car;
-
 delete from tb_preparer where id = 11;
 
 delete from tb_user where id = 2;
 
-update tb_user set active = 1, role = 1 where id = 2;
+update tb_user set active = 1, role = 0 where id = 2;
+update tb_user set balance = 0 where id = 1;
 
 update tb_championship set end_date = null where id > 5;
+
+CALL SoftDeleteUser(2);
 
 ------------------------------------------
 -- Carros com os pilotos e preparadores --

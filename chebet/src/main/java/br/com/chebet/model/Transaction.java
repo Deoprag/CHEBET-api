@@ -44,8 +44,4 @@ public class Transaction implements Serializable {
 
     @Column(name = "datetime", nullable = false)
     private LocalDateTime dateTime = LocalDateTime.now();
-
-    @ManyToOne
-    @JoinColumn(name = "discount_coupon_id")
-    private DiscountCoupon discountCoupon;
 }

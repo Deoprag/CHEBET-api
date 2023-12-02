@@ -11,6 +11,8 @@ import br.com.chebet.model.User;
 
 @Service
 public interface TransactionService {
+    public ResponseEntity<String> register(Map<String, String> requestMap);
+
     public ResponseEntity<List<Transaction>> findAll();
 
     public ResponseEntity<Transaction> findById(int id);
@@ -20,5 +22,5 @@ public interface TransactionService {
     public ResponseEntity<String> update(Map<String, String> requestMap);
 
     public ResponseEntity<List<Transaction>> findAllByUser(int id);
-
+    
 }

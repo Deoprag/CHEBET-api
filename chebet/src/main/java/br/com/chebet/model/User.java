@@ -1,6 +1,7 @@
 package br.com.chebet.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -60,8 +61,8 @@ public class User implements Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "balance")
-    private Float balance;
+    @Column(name = "balance", precision = 10, scale = 2)
+    private BigDecimal balance = BigDecimal.ZERO;
 
     @Column(name = "active", nullable = false)
     private boolean active = false;

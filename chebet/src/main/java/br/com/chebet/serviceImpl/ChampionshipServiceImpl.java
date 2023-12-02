@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import br.com.chebet.model.Championship;
 import br.com.chebet.model.Pilot;
+import br.com.chebet.model.Team;
 import br.com.chebet.repository.ChampionshipRepository;
 import br.com.chebet.repository.PilotRepository;
 import br.com.chebet.service.ChampionshipService;
@@ -76,7 +78,11 @@ public class ChampionshipServiceImpl implements ChampionshipService{
         Championship championship = new Championship();
         championship.setName(requestMap.get("name"));
         championship.setDate(ChebetUtils.stringToLocalDateTime(requestMap.get("date")));
-        championship.setEndDate(ChebetUtils.stringToLocalDateTime(requestMap.get("endDate")));
+        if (requestMap.get("endDate") == null) {
+            championship.setEndDate(null);
+        } else {
+            championship.setEndDate(ChebetUtils.stringToLocalDateTime(requestMap.get("endDate")));
+        }
         championship.setPilots(getPilotList(requestMap.get("pilots")));
         return championship;
     }
@@ -117,14 +123,57 @@ public class ChampionshipServiceImpl implements ChampionshipService{
 
     @Override
     public ResponseEntity<String> delete(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        log.info("Inside delete {}", id);
+        try {
+            Optional<Championship> optChampionship = championshipRepository.findById(id);
+            if (optChampionship.isPresent()) {
+                championshipRepository.delete(optChampionship.get());
+                return ChebetUtils.getResponseEntity("Apagado com sucesso!", HttpStatus.OK);
+            } else {
+                return ChebetUtils.getResponseEntity("Campeonato não encontrado.", HttpStatus.NOT_FOUND);
+            }
+        } catch (DataIntegrityViolationException e) {
+            return ChebetUtils.getResponseEntity("Não é possível excluir este campeonato, pois ele está associado a outros dados no sistema.", HttpStatus.CONFLICT);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ChebetUtils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
     public ResponseEntity<String> update(Map<String, String> requestMap) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        log.info("Inside update {}", requestMap);
+        try {
+            Optional<Championship> optChampionship = championshipRepository.findById(Integer.parseInt(requestMap.get("id")));
+            if (optChampionship.isPresent()) {
+                Championship championship = championshipRepository.findByName(requestMap.get("name"));
+                if (optChampionship.get().equals(championship) || championship == null) {
+                    championshipRepository.save(updateChampionshipFromMap(optChampionship.get(), requestMap));
+                    return ChebetUtils.getResponseEntity("Atualizado com sucesso!", HttpStatus.OK);
+                } else {
+                    return ChebetUtils.getResponseEntity("O nome de campeonato já está em uso.", HttpStatus.NOT_FOUND);
+                }
+            } else {
+                return ChebetUtils.getResponseEntity("Campeonato não encontrado.", HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ChebetUtils.getResponseEntity(Constants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public Championship updateChampionshipFromMap(Championship championship, Map<String, String> requestMap) throws ParseException {
+        if (requestMap.containsKey("name")) championship.setName(requestMap.get("name"));
+        if (requestMap.containsKey("date")) championship.setDate(ChebetUtils.stringToLocalDateTime(requestMap.get("date")));
+        if (requestMap.containsKey("endDate")) {
+            if (requestMap.get("endDate") == null) {
+                championship.setEndDate(null);
+            } else {
+                championship.setEndDate(ChebetUtils.stringToLocalDateTime(requestMap.get("endDate")));
+            }
+        }
+        if (requestMap.containsKey("pilots")) championship.setPilots(getPilotList(requestMap.get("pilots"))); 
+        return championship;
     }
 
 }

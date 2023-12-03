@@ -79,20 +79,6 @@ value
 1,
 0);
 
-insert into tb_user (first_name, last_name, email, birth_date, cpf, gender, phone_number, password, role, active, balance)
-value
-('Pedro',
-'Rabelo',
-'pdroeofiarabelo@gmail.com',
-'2004-02-27',
-'14848428683',
-0,
-'41999299999',
-'$2a$10$YV1aVK1lKNVeQ0eBschXr.Qs9OBrWvWez9Sv36TiXvmwsLR/KjYr.',
-0,
-1,
-0);
-
 insert into tb_team (name)
 values
 ('Monsters'),

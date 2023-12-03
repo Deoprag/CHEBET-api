@@ -87,5 +87,4 @@ public class PreparerController {
         return new ResponseEntity<List<Preparer>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
 }

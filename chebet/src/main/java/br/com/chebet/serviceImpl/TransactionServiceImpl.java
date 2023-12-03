@@ -16,6 +16,7 @@ import com.google.protobuf.Option;
 
 import br.com.chebet.model.Pilot;
 import br.com.chebet.model.Transaction;
+import br.com.chebet.model.TransactionType;
 import br.com.chebet.model.User;
 import br.com.chebet.repository.TransactionRepository;
 import br.com.chebet.repository.UserRepository;
@@ -39,7 +40,22 @@ public class TransactionServiceImpl implements TransactionService {
         try {
             if (validateRegisterFields(requestMap)) {
                 try {
-                    
+                    Optional<User> optUser = userRepository.findById(Integer.parseInt(requestMap.get("user_id")));
+                    if (optUser.isPresent()) {
+                        if(isTransactionValid(optUser.get(), requestMap)) {
+                            transactionRepository.save(getTransactionFromMap(requestMap));
+                            switch (requestMap.get("transaction_type")) {
+                                case "Deposito":
+                                    return ChebetUtils.getResponseEntity("Deposito realizado com sucesso!", HttpStatus.OK);
+                                case "Saque":                                    
+                                    return ChebetUtils.getResponseEntity("Saque realizado com sucesso!", HttpStatus.OK);
+                                case "Aposta":
+                                    return ChebetUtils.getResponseEntity("Aposta realizada com sucesso!", HttpStatus.OK);
+                            }
+                        } else {
+                            return ChebetUtils.getResponseEntity("Você não possui saldo suficiente para essa operação!", HttpStatus.FORBIDDEN);
+                        }
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     return ChebetUtils.getResponseEntity("Erro ao registrar transação!",
@@ -50,6 +66,25 @@ public class TransactionServiceImpl implements TransactionService {
             e.printStackTrace();
         }
         return ChebetUtils.getResponseEntity(Constants.INVALID_DATA, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    public boolean isTransactionValid(User user, Map<String, String> requestMap) {
+        if ((user.getBalance().floatValue() < Float.parseFloat(requestMap.get("value"))) && (TransactionType.Aposta.equals(TransactionType.valueOf(requestMap.get("transaction_type"))) || TransactionType.Saque.equals(TransactionType.valueOf(requestMap.get("transaction_type"))))) {
+            return false;
+        }
+        return true;
+    }
+
+    public Transaction getTransactionFromMap(Map<String, String> requestMap) {
+        Transaction transaction = new Transaction();
+        transaction.setTransactionType(TransactionType.valueOf(requestMap.get("transaction_type")));
+        transaction.setValue(Float.parseFloat(requestMap.get("value")));
+        Optional<User> optUser = userRepository.findById(Integer.parseInt(requestMap.get("user_id")));
+        if(optUser.isPresent()) {
+            transaction.setUser(optUser.get());
+        }
+
+        return transaction;
     }
 
     public boolean validateRegisterFields(Map<String, String> requestMap) {

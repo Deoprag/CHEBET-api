@@ -4,8 +4,6 @@ DELIMITER //
 CREATE PROCEDURE UpdateUserBalance(IN user_id_param INT)
 BEGIN
     DECLARE newBalance FLOAT;
-
-    -- Cálculo do novo saldo
     SET newBalance = (
         SELECT 
             COALESCE(SUM(CASE WHEN t.transaction_type IN (0, 3) THEN t.value ELSE 0 END), 0)
@@ -13,16 +11,11 @@ BEGIN
         FROM tb_transaction t
         WHERE t.user_id = user_id_param
     );
-
-    -- Verificar se o novo saldo é maior ou igual a 0
     IF newBalance >= 0 THEN
-        -- Atualizar o campo balance apenas se o novo saldo não for negativo
         UPDATE tb_user
         SET balance = newBalance
         WHERE id = user_id_param;
     ELSE
-        -- Se o novo saldo for negativo, você pode tomar alguma ação ou não fazer nada
-        -- Neste exemplo, apenas um aviso é exibido
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Saldo não pode ser negativo';
     END IF;
 END;
@@ -39,7 +32,6 @@ BEGIN
 END;
 // DELIMITER ;
 
-DROP PROCEDURE SoftDeleteUser;
 -- PROCEDURE - SoftDeleteUser
 -- Troca todos os campos da tb_user para valores padrão, removendo todos os dados do usuário, seguindo a LGPD
 DELIMITER //

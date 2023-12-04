@@ -8,17 +8,23 @@ select * from tb_car;
 select * from tb_championship;
 select * from tb_transaction;
 select * from tb_championship_pilots;
+select * from tb_ranking;
+select * from tb_race;
 
-delete from tb_preparer where id = 11;
+delete from tb_transaction where id = 28;
+delete from tb_race where id > 0;
 
-delete from tb_user where id = 2;
+delete from tb_ranking where id > 0;
 
-update tb_user set active = 1, role = 0 where id = 3;
+update tb_user set active = 1, role = 1 where id = 3;
 update tb_user set balance = 0 where id = 2;
+describe tb_race;
 
 update tb_championship set end_date = null where id > 5;
 
 CALL SoftDeleteUser(1);
+CALL GenerateRaceData(5);
+CALL UpdateRanking(5);
 
 ------------------------------------------
 -- Carros com os pilotos e preparadores --
@@ -44,3 +50,27 @@ CONCAT('R$', t.value) as valor
 FROM tb_user u
 INNER JOIN tb_transaction t ON t.user_id = u.id
 ORDER BY u.id, t.datetime;
+
+------------------------------------------
+--        Pilotos por campeonato        --
+------------------------------------------
+SELECT c.id, c.name, COUNT(*) as pilotos FROM tb_championship_pilots cp
+INNER JOIN tb_championship c on cp.championship_id = c.id
+GROUP BY c.id;
+
+------------------------------------------
+--          Ranking de Pilotos          --
+------------------------------------------
+SELECT c.name as campeonato,
+r.position as posicao,
+p.name as nome, 
+CASE
+    WHEN r.pilot_id = ra.pilot1_id THEN ra.pilot1_time
+    WHEN r.pilot_id = ra.pilot2_id THEN ra.pilot2_time
+	ELSE NULL
+END AS tempo
+FROM tb_ranking r
+INNER JOIN tb_pilot p on p.id = r.pilot_id
+INNER JOIN tb_championship c on c.id = r.championship_id
+INNER JOIN tb_race ra on ra.championship_id = c.id and ra.pilot1_id = p.id or ra.championship_id = c.id and ra.pilot2_id = p.id
+ORDER BY r.championship_id, r.position;

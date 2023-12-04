@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Formula;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,8 +39,7 @@ public class Ranking implements Serializable {
     @JoinColumn(name = "pilot_id", nullable = false)
     private Pilot pilot;
 
+    @Formula("(SELECT COALESCE(MAX(r.position), 0) + 1 FROM TB_Ranking r WHERE r.championship_id = championship_id)")
     @Column(name = "position", nullable = false)
     private Short position;
-
-
 }

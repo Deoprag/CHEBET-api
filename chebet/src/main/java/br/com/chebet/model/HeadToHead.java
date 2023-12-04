@@ -1,13 +1,13 @@
 package br.com.chebet.model;
 
 import java.io.Serializable;
+import java.time.LocalTime;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -20,8 +20,8 @@ import lombok.Data;
 @Data
 @DynamicUpdate
 @DynamicInsert
-@Table(name = "TB_Bet")
-public class Bet implements Serializable {
+@Table(name = "TB_Head_To_Head")
+public class HeadToHead implements Serializable {
     
     private static final long serialVersionUID = 1L;
 
@@ -29,38 +29,20 @@ public class Bet implements Serializable {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Enumerated
-    @Column(name = "bet_type")
-    private BetType betType;
-
-    @ManyToOne
-    @JoinColumn(name = "transaction_id", nullable = false)
-    private Transaction transaction;
     
     @ManyToOne
     @JoinColumn(name = "championship_id", nullable = false)
     private Championship championship;
     
     @ManyToOne
-    @JoinColumn(name = "simple_victory_id", nullable = false)
-    private SimpleVictory simpleVictory;
+    @JoinColumn(name = "race_id", nullable = false)
+    private Race race;
     
     @ManyToOne
-    @JoinColumn(name = "broken_car_id", nullable = false)
-    private BrokenCar brokenCar;
+    @JoinColumn(name = "winner_id", nullable = false)
+    private Pilot winner;
     
     @ManyToOne
-    @JoinColumn(name = "simple_position_id", nullable = false)
-    private SimplePosition simplePosition;
-    
-    @ManyToOne
-    @JoinColumn(name = "average_time_id", nullable = false)
-    private AverageTime averageTime;
-    
-    @ManyToOne
-    @JoinColumn(name = "head_to_head_id", nullable = false)
-    private HeadToHead headToHead;
-
-
+    @JoinColumn(name = "loser_id", nullable = false)
+    private Pilot loser;
 }

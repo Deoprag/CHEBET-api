@@ -22,4 +22,6 @@ public interface PilotService {
 
     public ResponseEntity<String> update(Map<String, String> requestMap);
 
+    public ResponseEntity<List<Pilot>> findAllActives();
+
 }

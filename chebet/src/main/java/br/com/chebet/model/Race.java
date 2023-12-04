@@ -41,14 +41,20 @@ public class Race implements Serializable {
 
     @Column(name = "pilot1_time")
     private LocalTime pilot1Time;
+
+    @Column(name = "pilot1_broke")
+    private boolean pilot1Broke = false;
     
     @ManyToOne
     @JoinColumn(name = "pilot2_id", nullable = false)
     private Pilot pilot2;
-
+    
     @Column(name = "pilot2_time")
     private LocalTime pilot2Time;
     
+    @Column(name = "pilot2_broke")
+    private boolean pilot2Broke = false;
+
     @ManyToOne
     @JoinColumn(name = "championship_id", nullable = false)
     private Championship championship;

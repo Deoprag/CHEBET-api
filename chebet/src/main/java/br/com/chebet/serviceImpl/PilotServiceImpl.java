@@ -84,10 +84,26 @@ public class PilotServiceImpl implements PilotService {
     }
 
     @Override
+    public ResponseEntity<List<Pilot>> findAllActives() {
+        try {
+            return new ResponseEntity<>(pilotRepository.findAllByActive(true), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
     public ResponseEntity<List<Pilot>> findByTeam(int teamId) {
         try {
             Optional<Team> team = teamRepository.findById(teamId);
-            return new ResponseEntity<>(pilotRepository.findByTeam(team.get()), HttpStatus.OK);
+            List<Pilot> list = new ArrayList<>();
+            for (Pilot pilot : list) {
+                if (pilot.isActive()) {
+                    list.add(pilot);
+                }
+            }
+            return new ResponseEntity<>(list, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
         }

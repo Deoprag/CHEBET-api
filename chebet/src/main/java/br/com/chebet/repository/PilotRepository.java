@@ -13,4 +13,6 @@ public interface PilotRepository extends JpaRepository<Pilot, Integer>{
     public Pilot findByName(String name);
 
     public Pilot findByNickname(String nickname);
+
+    public List<Pilot> findAllByActive(boolean active);
 }

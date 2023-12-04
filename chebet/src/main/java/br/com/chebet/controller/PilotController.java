@@ -48,6 +48,16 @@ public class PilotController {
         return new ResponseEntity<List<Pilot>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     
+    @GetMapping("/getActives")
+    public ResponseEntity<List<Pilot>> getAllActivePilots() {
+        try {
+            return pilotService.findAllActives();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<List<Pilot>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
     @GetMapping("/{id}")
     public ResponseEntity<Pilot> getPilot(@PathVariable int id) {
         try {

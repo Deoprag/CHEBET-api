@@ -3,6 +3,7 @@ package br.com.chebet.utils;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
@@ -20,11 +21,17 @@ public class ChebetUtils {
         LocalDate localDate = LocalDate.parse(stringLocalDate, formatter);
         return localDate;
     }
-
+    
     public static LocalDateTime stringToLocalDateTime(String stringLocalDateTime) throws ParseException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
         LocalDateTime localDateTime = LocalDateTime.parse(stringLocalDateTime, formatter);
         return localDateTime;
+    }
+    
+    public static LocalTime stringToLocalTime(String stringLocalTime) throws ParseException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss.SSS");
+        LocalTime localTime = LocalTime.parse(stringLocalTime, formatter);
+        return localTime;
     }
 
     public static boolean isOverage(LocalDate birthDate) {

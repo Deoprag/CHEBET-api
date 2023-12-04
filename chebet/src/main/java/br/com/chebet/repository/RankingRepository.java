@@ -5,15 +5,13 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import br.com.chebet.model.Championship;
+import br.com.chebet.model.Ranking;
 import jakarta.transaction.Transactional;
 
-public interface ChampionshipRepository extends JpaRepository<Championship, Integer>{
-    
-    public Championship findByName(String name);
+public interface RankingRepository extends JpaRepository<Ranking, Integer>{
 
     @Modifying
     @Transactional
-    @Query(value = "CALL GenerateRaceData(:id)", nativeQuery = true)
-    void generateRaceData(@Param("id") int id);
+    @Query(value = "CALL UpdateRanking(:id)", nativeQuery = true)
+    void generateRanking(@Param("id") int id);
 }

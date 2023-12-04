@@ -1,9 +1,7 @@
 package br.com.chebet.serviceImpl;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -15,16 +13,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import br.com.chebet.model.Championship;
 import br.com.chebet.model.Pilot;
-import br.com.chebet.model.Team;
+import br.com.chebet.model.Race;
 import br.com.chebet.repository.ChampionshipRepository;
 import br.com.chebet.repository.PilotRepository;
+import br.com.chebet.repository.RaceRepository;
+import br.com.chebet.repository.RankingRepository;
 import br.com.chebet.service.ChampionshipService;
 import br.com.chebet.utils.ChebetUtils;
 import br.com.chebet.utils.Constants;
@@ -39,6 +37,12 @@ public class ChampionshipServiceImpl implements ChampionshipService{
     
     @Autowired
     PilotRepository pilotRepository;
+    
+    @Autowired
+    RaceRepository raceRepository;
+    
+    @Autowired
+    RankingRepository rankingRepository;
 
     @Override
     public ResponseEntity<String> register(Map<String, String> requestMap) {
@@ -48,11 +52,39 @@ public class ChampionshipServiceImpl implements ChampionshipService{
                 try {
                     Championship championship = championshipRepository.findByName(requestMap.get("name"));
                     if(Objects.isNull(championship)) {
-                        championshipRepository.save(getChampionshipFromMap(requestMap));
-                        return ChebetUtils.getResponseEntity("Registrado com sucesso!", HttpStatus.OK);
+                        championship = getChampionshipFromMap(requestMap);
+                        if(championship.getPilots().size() % 2 == 0) {
+                            if(championship.isFinished()) {
+                                Optional<Championship> champ = championshipRepository.findById(championship.getId());
+                                if(champ.isPresent()) {
+                                    List<Race> races = raceRepository.findAllByChampionship(champ.get());
+                                    boolean save = true;
+                                    for (Race race : races) {
+                                        if (race.getPilot1Time() == null || race.getPilot2Time() == null) {
+                                            save = false;
+                                        }
+                                    }
+                                    if(save) {
+                                        championshipRepository.save(championship);
+                                        rankingRepository.generateRanking(championship.getId());
+                                        return ChebetUtils.getResponseEntity("Registrado com sucesso!", HttpStatus.OK);
+                                    } else {
+                                        return ChebetUtils.getResponseEntity("Você precisa finalizar todas as corridas antes de encerrar um campeonato!",    
+                                        HttpStatus.BAD_REQUEST);
+                                    }
+                                }
+                            } else {
+                                championshipRepository.generateRaceData(championship.getId());
+                                championshipRepository.save(championship);
+                                return ChebetUtils.getResponseEntity("Registrado com sucesso!", HttpStatus.OK);
+                            }
+                        } else {
+                            return ChebetUtils.getResponseEntity("Quantidade de pilotos não aceita. Selecione uma quantidade par!",    
+                            HttpStatus.BAD_REQUEST);
+                        }
                     } else {
                         return ChebetUtils.getResponseEntity("O nome informado para o campeonato já está em uso!",
-                            HttpStatus.BAD_REQUEST);
+                        HttpStatus.BAD_REQUEST);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -68,12 +100,12 @@ public class ChampionshipServiceImpl implements ChampionshipService{
     }
 
     public boolean validateRegisterFields(Map<String, String> requestMap) {
-        if (requestMap.containsKey("name") && requestMap.containsKey("date") && requestMap.containsKey("endDate") && requestMap.containsKey("pilots")) {
+        if (requestMap.containsKey("name") && requestMap.containsKey("date") && requestMap.containsKey("endDate") && requestMap.containsKey("pilots") && requestMap.containsKey("finished")) {
             return true;
         }
         return false;
     }
-
+    
     public Championship getChampionshipFromMap(Map<String, String> requestMap) throws ParseException, JsonMappingException, JsonProcessingException {
         Championship championship = new Championship();
         championship.setName(requestMap.get("name"));
@@ -84,6 +116,7 @@ public class ChampionshipServiceImpl implements ChampionshipService{
             championship.setEndDate(ChebetUtils.stringToLocalDateTime(requestMap.get("endDate")));
         }
         championship.setPilots(getPilotList(requestMap.get("pilots")));
+        if (requestMap.containsKey("finished")) championship.setFinished(Boolean.parseBoolean(requestMap.get("finished")));
         return championship;
     }
 
@@ -148,8 +181,36 @@ public class ChampionshipServiceImpl implements ChampionshipService{
             if (optChampionship.isPresent()) {
                 Championship championship = championshipRepository.findByName(requestMap.get("name"));
                 if (optChampionship.get().equals(championship) || championship == null) {
-                    championshipRepository.save(updateChampionshipFromMap(optChampionship.get(), requestMap));
-                    return ChebetUtils.getResponseEntity("Atualizado com sucesso!", HttpStatus.OK);
+                    championship = updateChampionshipFromMap(optChampionship.get(), requestMap);
+                    if(championship.getPilots().size() % 2 == 0) {
+                        if(championship.isFinished()) {
+                            Optional<Championship> champ = championshipRepository.findById(championship.getId());
+                            if(champ.isPresent()) {
+                                List<Race> races = raceRepository.findAllByChampionship(champ.get());
+                                boolean save = true;
+                                for (Race race : races) {
+                                    if (race.getPilot1Time() == null || race.getPilot2Time() == null) {
+                                        save = false;
+                                    }
+                                }
+                                if(save) {
+                                    championshipRepository.save(championship);
+                                    rankingRepository.generateRanking(championship.getId());
+                                    return ChebetUtils.getResponseEntity("Registrado com sucesso!", HttpStatus.OK);
+                                } else {
+                                    return ChebetUtils.getResponseEntity("Você precisa finalizar todas as corridas antes de encerrar um campeonato!",    
+                                    HttpStatus.BAD_REQUEST);
+                                }
+                            }
+                        } else {
+                            championshipRepository.generateRaceData(championship.getId());
+                            championshipRepository.save(championship);
+                            return ChebetUtils.getResponseEntity("Registrado com sucesso!", HttpStatus.OK);
+                        }
+                    } else {
+                        return ChebetUtils.getResponseEntity("Quantidade de pilotos não aceita. Selecione uma quantidade par!",    
+                        HttpStatus.BAD_REQUEST);
+                    }
                 } else {
                     return ChebetUtils.getResponseEntity("O nome de campeonato já está em uso.", HttpStatus.NOT_FOUND);
                 }
@@ -173,6 +234,7 @@ public class ChampionshipServiceImpl implements ChampionshipService{
             }
         }
         if (requestMap.containsKey("pilots")) championship.setPilots(getPilotList(requestMap.get("pilots"))); 
+        if (requestMap.containsKey("finished")) championship.setFinished(Boolean.parseBoolean(requestMap.get("finished")));
         return championship;
     }
 

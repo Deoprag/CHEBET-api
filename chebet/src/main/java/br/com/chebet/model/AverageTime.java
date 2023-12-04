@@ -1,8 +1,7 @@
 package br.com.chebet.model;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.List;
+import java.time.LocalTime;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -12,7 +11,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -20,28 +20,23 @@ import lombok.Data;
 @Data
 @DynamicUpdate
 @DynamicInsert
-@Table(name = "TB_Championship")
-public class Championship implements Serializable {
-
+@Table(name = "TB_Average_Time")
+public class AverageTime implements Serializable {
+    
     private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    
+    @ManyToOne
+    @JoinColumn(name = "championship_id", nullable = false)
+    private Championship championship;
+    
+    @Column(name = "average_time_1")
+    private LocalTime averageTime1;
 
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
-
-    @Column(name = "date_time")
-    private LocalDateTime date;
-
-    @Column(name = "end_date_time")
-    private LocalDateTime endDate;
-
-    @Column(name = "finished")
-    private boolean finished = false;
-
-    @ManyToMany
-    private List<Pilot> pilots;
+    @Column(name = "average_time_2")
+    private LocalTime averageTime2;
 }

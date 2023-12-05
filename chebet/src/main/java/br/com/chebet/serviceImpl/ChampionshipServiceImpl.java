@@ -16,13 +16,20 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import br.com.chebet.model.Bet;
+import br.com.chebet.model.BetType;
 import br.com.chebet.model.Championship;
 import br.com.chebet.model.Pilot;
 import br.com.chebet.model.Race;
+import br.com.chebet.model.Transaction;
+import br.com.chebet.model.TransactionType;
+import br.com.chebet.model.User;
+import br.com.chebet.repository.BetRepository;
 import br.com.chebet.repository.ChampionshipRepository;
 import br.com.chebet.repository.PilotRepository;
 import br.com.chebet.repository.RaceRepository;
 import br.com.chebet.repository.RankingRepository;
+import br.com.chebet.repository.TransactionRepository;
 import br.com.chebet.service.ChampionshipService;
 import br.com.chebet.utils.ChebetUtils;
 import br.com.chebet.utils.Constants;
@@ -43,6 +50,12 @@ public class ChampionshipServiceImpl implements ChampionshipService{
     
     @Autowired
     RankingRepository rankingRepository;
+    
+    @Autowired
+    BetRepository betRepository;
+    
+    @Autowired
+    TransactionRepository transactionRepository;
 
     @Override
     public ResponseEntity<String> register(Map<String, String> requestMap) {
@@ -67,6 +80,7 @@ public class ChampionshipServiceImpl implements ChampionshipService{
                                     if(save) {
                                         championshipRepository.save(championship);
                                         rankingRepository.generateRanking(championship.getId());
+                                        calculateWinners(championship);
                                         return ChebetUtils.getResponseEntity("Registrado com sucesso!", HttpStatus.OK);
                                     } else {
                                         return ChebetUtils.getResponseEntity("Você precisa finalizar todas as corridas antes de encerrar um campeonato!",    
@@ -196,7 +210,8 @@ public class ChampionshipServiceImpl implements ChampionshipService{
                                 if(save) {
                                     championshipRepository.save(championship);
                                     rankingRepository.generateRanking(championship.getId());
-                                    return ChebetUtils.getResponseEntity("Registrado com sucesso!", HttpStatus.OK);
+                                    calculateWinners(championship);
+                                    return ChebetUtils.getResponseEntity("Atualizado com sucesso!", HttpStatus.OK);
                                 } else {
                                     return ChebetUtils.getResponseEntity("Você precisa finalizar todas as corridas antes de encerrar um campeonato!",    
                                     HttpStatus.BAD_REQUEST);
@@ -205,7 +220,7 @@ public class ChampionshipServiceImpl implements ChampionshipService{
                         } else {
                             championshipRepository.generateRaceData(championship.getId());
                             championshipRepository.save(championship);
-                            return ChebetUtils.getResponseEntity("Registrado com sucesso!", HttpStatus.OK);
+                            return ChebetUtils.getResponseEntity("Atualizado com sucesso!", HttpStatus.OK);
                         }
                     } else {
                         return ChebetUtils.getResponseEntity("Quantidade de pilotos não aceita. Selecione uma quantidade par!",    
@@ -238,4 +253,51 @@ public class ChampionshipServiceImpl implements ChampionshipService{
         return championship;
     }
 
+    public void calculateWinners(Championship championship) {
+        calculateSimpleVictory(championship);
+    }
+
+    public void calculateSimpleVictory(Championship championship) {
+        // LISTA TODAS AS APOSTAS QUE SAO SimpleVictory E SEPARA ELAS NO championshipBets
+        List<Bet> simpleVictoryList = betRepository.findAllByBetType(BetType.SimpleVictory);
+        List<Bet> championshipBets = new ArrayList<>();
+        for (Bet bet : simpleVictoryList) {
+            if(bet.getChampionship().equals(championship)) {
+                championshipBets.add(bet);
+            }
+        }
+        
+        // ENCONTRA O VENCEDOR DO CAMPEONATO, SETA AS VARIAVEIS
+        Optional<Pilot> pilot = pilotRepository.findById(rankingRepository.getWinner(championship.getId()));
+        Pilot winner = pilot.get();
+        float moneyAmount = 0;
+        float betAmount = simpleVictoryList.size();
+        float winnerAmount = 0;
+        List<User> winners = new ArrayList<>();
+
+        // ADICIONA O VALOR DE TODAS AS APOSTAS EM betAmout
+        // ADICIONA O VALOR DE TODAS AS APOSTAS VENCEDORAS EM winnerAmount
+        for (Bet betSimpleVictory : simpleVictoryList) {
+            moneyAmount += betSimpleVictory.getTransaction().getValue();
+            if(betSimpleVictory.getSimpleVictory().getPilot() == winner) {
+                winnerAmount += betSimpleVictory.getTransaction().getValue();
+            }
+        }
+
+        // CALCULA QUANTO CADA VENCEDORA GANHARÁ E SALVA A TRANSACAO
+        // O CALCULO É FEITO DA SEGUINTE MANEIRA: ((dinheiroTotalApostas / 100) / ((valorDaAposta / dinheiroApostasVencedoras) * 100))
+        for (Bet betSimpleVictory : simpleVictoryList) {
+            System.out.println(betSimpleVictory);
+            if(betSimpleVictory.getSimpleVictory().getPilot() == winner) {
+                Transaction transaction = new Transaction();
+                transaction.setTransactionType(TransactionType.Pagamento);
+                transaction.setUser(betSimpleVictory.getTransaction().getUser());
+                transaction.setValue((moneyAmount / 100) / ((betSimpleVictory.getTransaction().getValue() / winnerAmount) * (100)));
+
+                System.out.println("VENCEU: " + betSimpleVictory);
+
+                transactionRepository.save(transaction);
+            }
+        }
+    }
 }

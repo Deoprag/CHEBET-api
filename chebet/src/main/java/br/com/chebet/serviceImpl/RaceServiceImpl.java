@@ -12,8 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.com.chebet.model.Car;
+import br.com.chebet.model.Championship;
+import br.com.chebet.model.Pilot;
 import br.com.chebet.model.Preparer;
 import br.com.chebet.model.Race;
+import br.com.chebet.model.Team;
+import br.com.chebet.repository.ChampionshipRepository;
 import br.com.chebet.repository.RaceRepository;
 import br.com.chebet.service.RaceService;
 import br.com.chebet.utils.ChebetUtils;
@@ -26,6 +30,9 @@ public class RaceServiceImpl implements RaceService{
 
     @Autowired
     RaceRepository raceRepository;
+
+    @Autowired
+    ChampionshipRepository championshipRepository;
 
     @Override
     public ResponseEntity<List<Race>> findAll() {
@@ -64,8 +71,18 @@ public class RaceServiceImpl implements RaceService{
 
     @Override
     public ResponseEntity<List<Race>> findByChampionship(int championshipId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findByChampionship'");
+        try {
+            Optional<Championship> championship = championshipRepository.findById(championshipId);
+            if (championship.isPresent()) {
+                return new ResponseEntity<>(raceRepository.findAllByChampionship(championship.get()), HttpStatus.OK);
+                
+            } else {
+                return new ResponseEntity<List<Race>>(new ArrayList<>(), HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
     
 }

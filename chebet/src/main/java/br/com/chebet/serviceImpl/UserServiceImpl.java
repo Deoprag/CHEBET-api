@@ -144,6 +144,7 @@ public class UserServiceImpl implements UserService {
         user.setLastName(requestMap.get("lastName"));
         user.setEmail(requestMap.get("email"));
         user.setRole(Role.User);
+        user.setActive(true);
         user.setBirthDate(ChebetUtils.stringToLocalDate(requestMap.get("birthDate")));
         user.setCpf(requestMap.get("cpf"));
         user.setGender(Gender.valueOf(requestMap.get("gender")));
@@ -242,43 +243,15 @@ public class UserServiceImpl implements UserService {
     }
 
     public User updateUserFromMap(User user, Map<String, String> requestMap) throws ParseException {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         if (requestMap.containsKey("role")) user.setRole(Role.valueOf(requestMap.get("role")));
         if (requestMap.containsKey("email")) user.setEmail(requestMap.get("email"));
         if (requestMap.containsKey("gender")) user.setGender(Gender.valueOf(requestMap.get("gender")));
         if (requestMap.containsKey("phoneNumber")) user.setPhoneNumber(requestMap.get("phoneNumber"));
         if (requestMap.containsKey("active")) user.setActive(Boolean.parseBoolean(requestMap.get("active")));
+        if (requestMap.containsKey("password")) user.setPassword(passwordEncoder.encode(requestMap.get("password")));
+
         return user;
-    }
-
-    public boolean isUserRepositoryWorking() {
-        try {
-            User user = new User();
-            user.setFirstName("John");
-            user.setLastName("Doe");
-            user.setEmail("john.doe@mail.com");
-            user.setRole(Role.User);
-            user.setBirthDate(LocalDate.of(2000, 2, 20));
-            user.setCpf("12345678910");
-            user.setGender(Gender.Male);
-            user.setPhoneNumber("41999999999");
-            PasswordEncoder encoder = new BCryptPasswordEncoder();
-            user.setPassword(encoder.encode("12345678"));
-            user.setActive(false);
-            System.out.println("Sets OK");
-            userRepository.save(user);
-            System.out.println("Salvo OK");
-            user.setActive(true);
-            userRepository.save(user);
-            System.out.println("Atualizado OK");
-            userRepository.delete(user);
-            System.out.println("Apagado OK");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return true;
     }
 
 }

@@ -30,7 +30,7 @@ CREATE TABLE `tb_average_time` (
   PRIMARY KEY (`id`),
   KEY `FKhhiqe5w17hpiutkbgvt0xru26` (`championship_id`),
   CONSTRAINT `FKhhiqe5w17hpiutkbgvt0xru26` FOREIGN KEY (`championship_id`) REFERENCES `tb_championship` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `tb_average_time` (
 
 LOCK TABLES `tb_average_time` WRITE;
 /*!40000 ALTER TABLE `tb_average_time` DISABLE KEYS */;
-INSERT INTO `tb_average_time` VALUES (1,'00:00:50.000000','00:01:00.000000',4);
+INSERT INTO `tb_average_time` VALUES (1,'00:00:50.000000','00:01:00.000000',4),(2,'00:01:10.000000','00:01:15.000000',14),(3,'00:00:50.000000','00:00:55.000000',14),(4,'00:00:30.000000','00:00:35.000000',14),(5,'00:00:38.000000','00:00:43.000000',16),(6,'00:00:27.000000','00:00:32.000000',16),(7,'00:00:34.000000','00:00:39.000000',16);
 /*!40000 ALTER TABLE `tb_average_time` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -79,7 +79,7 @@ CREATE TABLE `tb_bet` (
   CONSTRAINT `FKk9vpyjel9bcacp60ttmnxlikq` FOREIGN KEY (`head_to_head_id`) REFERENCES `tb_head_to_head` (`id`),
   CONSTRAINT `FKlxqy14kwcka7cie44j22apot8` FOREIGN KEY (`broken_car_id`) REFERENCES `tb_broken_car` (`id`),
   CONSTRAINT `FKoepawuryomx3ufc7g153stkpu` FOREIGN KEY (`simple_victory_id`) REFERENCES `tb_simple_victory` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -88,7 +88,7 @@ CREATE TABLE `tb_bet` (
 
 LOCK TABLES `tb_bet` WRITE;
 /*!40000 ALTER TABLE `tb_bet` DISABLE KEYS */;
-INSERT INTO `tb_bet` VALUES (1,4,4,43,NULL,NULL,1,NULL,NULL,3),(2,0,4,44,NULL,NULL,NULL,NULL,1,3),(3,1,4,45,NULL,1,NULL,NULL,NULL,3),(4,2,4,46,NULL,NULL,NULL,1,NULL,3),(5,3,4,47,1,NULL,NULL,NULL,NULL,3);
+INSERT INTO `tb_bet` VALUES (1,4,4,43,NULL,NULL,1,NULL,NULL,3),(2,0,4,44,NULL,NULL,NULL,NULL,1,3),(3,1,4,45,NULL,1,NULL,NULL,NULL,3),(5,3,4,47,1,NULL,NULL,NULL,NULL,3),(6,0,11,56,NULL,NULL,NULL,NULL,2,5),(7,0,11,57,NULL,NULL,NULL,NULL,3,4),(8,0,11,59,NULL,NULL,NULL,NULL,4,3),(9,1,12,62,NULL,2,NULL,NULL,NULL,4),(10,1,12,63,NULL,3,NULL,NULL,NULL,5),(11,1,12,64,NULL,4,NULL,NULL,NULL,3),(12,2,13,66,NULL,NULL,NULL,2,NULL,4),(13,2,13,67,NULL,NULL,NULL,3,NULL,5),(14,2,13,69,NULL,NULL,NULL,4,NULL,3),(15,3,14,72,2,NULL,NULL,NULL,NULL,4),(16,3,14,73,3,NULL,NULL,NULL,NULL,5),(17,3,14,74,4,NULL,NULL,NULL,NULL,3),(18,4,15,76,NULL,NULL,2,NULL,NULL,5),(19,4,15,77,NULL,NULL,3,NULL,NULL,4),(20,4,15,78,NULL,NULL,4,NULL,NULL,3),(21,4,15,79,NULL,NULL,5,NULL,NULL,4),(22,0,16,84,NULL,NULL,NULL,NULL,5,4),(23,1,16,85,NULL,5,NULL,NULL,NULL,4),(24,2,16,86,NULL,NULL,NULL,5,NULL,4),(25,3,16,87,5,NULL,NULL,NULL,NULL,4),(26,4,16,88,NULL,NULL,6,NULL,NULL,4),(27,0,16,89,NULL,NULL,NULL,NULL,6,5),(28,1,16,90,NULL,6,NULL,NULL,NULL,5),(29,2,16,91,NULL,NULL,NULL,6,NULL,5),(30,3,16,92,6,NULL,NULL,NULL,NULL,5),(31,4,16,93,NULL,NULL,7,NULL,NULL,5),(32,0,16,94,NULL,NULL,NULL,NULL,7,3),(33,1,16,95,NULL,7,NULL,NULL,NULL,3),(34,2,16,96,NULL,NULL,NULL,7,NULL,3),(35,3,16,97,7,NULL,NULL,NULL,NULL,3),(36,4,16,98,NULL,NULL,8,NULL,NULL,3);
 /*!40000 ALTER TABLE `tb_bet` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -108,7 +108,7 @@ CREATE TABLE `tb_broken_car` (
   KEY `FKjgbdvadti9471l21bjfntx15j` (`pilot_id`),
   CONSTRAINT `FKjgbdvadti9471l21bjfntx15j` FOREIGN KEY (`pilot_id`) REFERENCES `tb_pilot` (`id`),
   CONSTRAINT `FKlxigd2cfhl0svfm1jmy2eep6g` FOREIGN KEY (`championship_id`) REFERENCES `tb_championship` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -117,7 +117,7 @@ CREATE TABLE `tb_broken_car` (
 
 LOCK TABLES `tb_broken_car` WRITE;
 /*!40000 ALTER TABLE `tb_broken_car` DISABLE KEYS */;
-INSERT INTO `tb_broken_car` VALUES (1,4,11);
+INSERT INTO `tb_broken_car` VALUES (1,4,11),(2,12,1),(3,12,2),(4,12,1),(5,16,4),(6,16,4),(7,16,4);
 /*!40000 ALTER TABLE `tb_broken_car` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -169,7 +169,7 @@ CREATE TABLE `tb_championship` (
   `finished` bit(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_or8pnnlhwv2ugurkmwi2lwv1g` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -178,7 +178,7 @@ CREATE TABLE `tb_championship` (
 
 LOCK TABLES `tb_championship` WRITE;
 /*!40000 ALTER TABLE `tb_championship` DISABLE KEYS */;
-INSERT INTO `tb_championship` VALUES (1,'2023-12-03 11:19:40.000000','2023-12-03 13:19:40.000000','Arrancada Suprema',_binary ''),(2,'2023-12-03 02:19:40.000000','2023-12-03 08:19:40.000000','Desafio das Pistas',_binary ''),(3,'2023-12-02 23:19:40.000000','2023-12-04 23:19:40.000000','Copa Turbo Aceleração',_binary ''),(4,'2023-12-02 20:19:40.000000','2023-12-04 20:19:40.000000','Grand Prix de Arrancada',_binary '\0'),(5,'2023-11-26 17:19:40.000000','2023-12-01 17:19:40.000000','Corrida Turbocharge',_binary ''),(6,'2023-11-25 20:19:40.000000','2023-11-30 20:19:40.000000','Chebet Oficial',_binary '\0'),(7,'2023-11-25 20:19:40.000000','2023-11-30 20:19:40.000000','Grande Corrida Turbo',_binary '\0'),(8,'2023-11-25 20:19:40.000000','2023-11-30 20:19:40.000000','Copa das Arrancadas Extremas',_binary '\0'),(9,'2023-11-25 20:19:40.000000','2023-11-30 20:19:40.000000','Campeonato Velozes e Furiosos',_binary '\0'),(10,'2023-11-25 20:19:40.000000','2023-11-30 20:19:40.000000','Armageddon 2023',_binary '\0');
+INSERT INTO `tb_championship` VALUES (1,'2023-12-03 11:19:40.000000','2023-12-03 13:19:40.000000','Arrancada Suprema',_binary ''),(2,'2023-12-03 02:19:40.000000','2023-12-03 08:19:40.000000','Desafio das Pistas',_binary ''),(3,'2023-12-02 23:19:40.000000','2023-12-04 23:19:40.000000','Copa Turbo Aceleração',_binary ''),(4,'2023-12-02 20:19:40.000000','2023-12-04 20:19:40.000000','Grand Prix de Arrancada',_binary '\0'),(5,'2023-11-26 17:19:40.000000','2023-12-01 17:19:40.000000','Corrida Turbocharge',_binary ''),(6,'2023-11-25 20:19:40.000000','2023-11-30 20:19:40.000000','Chebet Oficial',_binary '\0'),(7,'2023-11-25 20:19:40.000000','2023-11-30 20:19:40.000000','Grande Corrida Turbo',_binary '\0'),(8,'2023-11-25 20:19:40.000000','2023-11-30 20:19:40.000000','Copa das Arrancadas Extremas',_binary '\0'),(9,'2023-11-25 20:19:40.000000','2023-11-30 20:19:40.000000','Campeonato Velozes e Furiosos',_binary '\0'),(10,'2023-11-25 20:19:40.000000','2023-11-30 20:19:40.000000','Armageddon 2023',_binary '\0'),(11,'2023-12-05 14:43:16.000000',NULL,'simpleVictory',_binary ''),(12,'2023-12-05 14:44:59.000000','2023-12-05 14:44:59.000000','brokenCar',_binary ''),(13,'2023-12-06 20:44:59.000000','2023-12-06 20:44:59.000000','simplePosition',_binary ''),(14,'2023-12-03 18:45:56.000000','2023-12-03 18:45:56.000000','averageTime',_binary ''),(15,'2023-12-10 03:00:47.000000','2023-12-10 03:00:47.000000','headToHead',_binary ''),(16,'2023-12-03 19:00:58.000000','2023-12-03 19:00:58.000000','Chebet Oficial 2023',_binary '');
 /*!40000 ALTER TABLE `tb_championship` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -205,7 +205,7 @@ CREATE TABLE `tb_championship_pilots` (
 
 LOCK TABLES `tb_championship_pilots` WRITE;
 /*!40000 ALTER TABLE `tb_championship_pilots` DISABLE KEYS */;
-INSERT INTO `tb_championship_pilots` VALUES (6,2),(6,3),(6,1),(6,4),(6,15),(6,12),(6,13),(6,23),(6,21),(6,22),(6,24),(6,29),(6,27),(6,28),(6,30),(7,1),(7,2),(7,5),(7,7),(7,8),(7,18),(7,15),(7,17),(7,22),(7,24),(7,20),(7,27),(7,28),(7,29),(7,30),(7,34),(7,33),(8,3),(8,2),(8,9),(8,7),(8,10),(8,8),(8,16),(8,17),(8,15),(8,19),(8,22),(8,24),(8,30),(8,27),(8,39),(8,38),(8,46),(8,43),(8,45),(8,48),(8,50),(9,4),(9,9),(9,10),(9,11),(9,12),(9,17),(9,15),(9,22),(9,21),(9,30),(9,29),(9,34),(9,32),(10,1),(10,2),(10,3),(10,5),(10,6),(10,7),(10,13),(10,11),(10,12),(10,15),(10,17),(10,24),(10,22),(10,26),(10,28),(10,32),(10,31),(1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(5,8),(5,15),(5,18),(5,17),(5,16),(5,23),(5,21),(5,20),(5,22),(5,30),(5,29),(5,32),(5,33),(5,41),(5,39),(5,38),(5,40),(5,48),(5,46),(5,3),(2,1),(2,2),(2,3),(2,4),(2,5),(2,6),(2,7),(2,8),(2,9),(2,10),(3,11),(3,12),(3,13),(3,14),(3,15),(3,16),(3,17),(3,18),(3,19),(3,20),(4,11),(4,12),(4,13),(4,14),(4,15),(4,16),(4,17),(4,18),(4,19),(4,20);
+INSERT INTO `tb_championship_pilots` VALUES (6,2),(6,3),(6,1),(6,4),(6,15),(6,12),(6,13),(6,23),(6,21),(6,22),(6,24),(6,29),(6,27),(6,28),(6,30),(7,1),(7,2),(7,5),(7,7),(7,8),(7,18),(7,15),(7,17),(7,22),(7,24),(7,20),(7,27),(7,28),(7,29),(7,30),(7,34),(7,33),(8,3),(8,2),(8,9),(8,7),(8,10),(8,8),(8,16),(8,17),(8,15),(8,19),(8,22),(8,24),(8,30),(8,27),(8,39),(8,38),(8,46),(8,43),(8,45),(8,48),(8,50),(9,4),(9,9),(9,10),(9,11),(9,12),(9,17),(9,15),(9,22),(9,21),(9,30),(9,29),(9,34),(9,32),(10,1),(10,2),(10,3),(10,5),(10,6),(10,7),(10,13),(10,11),(10,12),(10,15),(10,17),(10,24),(10,22),(10,26),(10,28),(10,32),(10,31),(1,1),(1,2),(1,3),(1,4),(1,5),(1,6),(1,7),(1,8),(1,9),(1,10),(1,11),(1,12),(5,8),(5,15),(5,18),(5,17),(5,16),(5,23),(5,21),(5,20),(5,22),(5,30),(5,29),(5,32),(5,33),(5,41),(5,39),(5,38),(5,40),(5,48),(5,46),(5,3),(2,1),(2,2),(2,3),(2,4),(2,5),(2,6),(2,7),(2,8),(2,9),(2,10),(3,11),(3,12),(3,13),(3,14),(3,15),(3,16),(3,17),(3,18),(3,19),(3,20),(4,11),(4,12),(4,13),(4,14),(4,15),(4,16),(4,17),(4,18),(4,19),(4,20),(11,1),(11,2),(12,1),(12,2),(13,1),(13,2),(13,3),(13,4),(14,1),(14,2),(14,3),(14,4),(15,1),(15,2),(15,3),(15,4),(16,1),(16,2),(16,3),(16,4),(16,5),(16,6);
 /*!40000 ALTER TABLE `tb_championship_pilots` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -231,7 +231,7 @@ CREATE TABLE `tb_head_to_head` (
   CONSTRAINT `FKllwl7935g134cvpd7hwicw1h9` FOREIGN KEY (`race_id`) REFERENCES `tb_race` (`id`),
   CONSTRAINT `FKsau3lx64v013i1tgdhdj8n5fy` FOREIGN KEY (`loser_id`) REFERENCES `tb_pilot` (`id`),
   CONSTRAINT `FKso4ep4mv9g7jd4vasyo8kv6vt` FOREIGN KEY (`championship_id`) REFERENCES `tb_championship` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -240,7 +240,7 @@ CREATE TABLE `tb_head_to_head` (
 
 LOCK TABLES `tb_head_to_head` WRITE;
 /*!40000 ALTER TABLE `tb_head_to_head` DISABLE KEYS */;
-INSERT INTO `tb_head_to_head` VALUES (1,4,16,148,11);
+INSERT INTO `tb_head_to_head` VALUES (1,4,16,148,11),(2,15,4,158,2),(3,15,3,159,1),(4,15,4,158,2),(5,15,4,158,2),(6,16,3,161,4),(7,16,5,162,6),(8,16,4,161,3);
 /*!40000 ALTER TABLE `tb_head_to_head` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -327,7 +327,7 @@ CREATE TABLE `tb_race` (
   CONSTRAINT `FKe0ri49xfdpy40pnwnfwha3mis` FOREIGN KEY (`pilot2_id`) REFERENCES `tb_pilot` (`id`),
   CONSTRAINT `FKf0ii8n7asfmkoi3hlvwrmbos6` FOREIGN KEY (`championship_id`) REFERENCES `tb_championship` (`id`),
   CONSTRAINT `FKsibwxgv6wbatwlcigfah1d5y9` FOREIGN KEY (`pilot1_id`) REFERENCES `tb_pilot` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=163 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -336,7 +336,7 @@ CREATE TABLE `tb_race` (
 
 LOCK TABLES `tb_race` WRITE;
 /*!40000 ALTER TABLE `tb_race` DISABLE KEYS */;
-INSERT INTO `tb_race` VALUES (103,'00:00:54.161000','00:00:26.156000',1,5,15,17,_binary '\0',_binary '\0'),(104,'00:00:56.941000','00:00:26.145000',2,5,33,41,_binary '\0',_binary '\0'),(105,'00:00:56.151000','00:00:51.651000',3,5,46,8,_binary '\0',_binary '\0'),(106,'00:00:26.156000','00:00:51.654000',4,5,23,20,_binary '\0',_binary '\0'),(107,'00:00:26.315000','00:00:52.615000',5,5,30,29,_binary '\0',_binary '\0'),(108,'00:00:45.612000','00:00:35.465000',6,5,39,32,_binary '\0',_binary '\0'),(109,'00:00:26.159000','00:09:59.999000',7,5,22,38,_binary '\0',_binary ''),(110,'00:00:26.156000','00:00:54.654000',8,5,40,18,_binary '\0',_binary '\0'),(111,'00:09:59.999000','00:09:59.999000',9,5,21,48,_binary '',_binary ''),(112,'00:09:59.999000','00:00:26.351000',10,5,3,16,_binary '',_binary '\0'),(118,'00:00:26.551000','00:00:51.613000',1,3,13,15,_binary '\0',_binary '\0'),(119,'00:00:23.415000','00:00:35.646000',2,3,11,19,_binary '\0',_binary '\0'),(120,'00:00:26.546000','00:00:56.456000',3,3,18,17,_binary '\0',_binary '\0'),(121,'00:09:59.999000','00:00:34.564000',4,3,16,12,_binary '',_binary '\0'),(122,'00:00:26.546000','00:00:45.565000',5,3,14,20,_binary '\0',_binary '\0'),(129,'00:00:26.546000','00:00:46.512000',1,2,5,2,_binary '\0',_binary '\0'),(130,'00:00:32.165000','00:00:45.561000',2,2,7,3,_binary '\0',_binary '\0'),(131,'00:00:30.546000','00:00:51.613000',3,2,4,6,_binary '\0',_binary '\0'),(132,'00:01:02.651000','00:00:56.545000',4,2,9,1,_binary '\0',_binary '\0'),(133,'00:01:25.654000','00:09:59.999000',5,2,10,8,_binary '\0',_binary ''),(140,'00:00:51.196000','00:00:20.616000',1,1,12,3,_binary '\0',_binary '\0'),(141,'00:00:59.592000','00:00:15.654000',2,1,2,4,_binary '\0',_binary '\0'),(142,'00:00:26.549000','00:00:59.454000',3,1,8,5,_binary '\0',_binary '\0'),(143,'00:00:15.915000','00:00:56.451000',4,1,10,11,_binary '\0',_binary '\0'),(144,'00:09:59.999000','00:00:23.654000',5,1,7,1,_binary '',_binary '\0'),(145,'00:00:26.595000','00:09:59.999000',6,1,6,9,_binary '\0',_binary ''),(146,NULL,NULL,1,4,12,13,_binary '\0',_binary '\0'),(147,NULL,NULL,2,4,19,15,_binary '\0',_binary '\0'),(148,NULL,NULL,3,4,11,16,_binary '\0',_binary '\0'),(149,NULL,NULL,4,4,18,20,_binary '\0',_binary '\0'),(150,NULL,NULL,5,4,17,14,_binary '\0',_binary '\0');
+INSERT INTO `tb_race` VALUES (103,'00:00:54.161000','00:00:26.156000',1,5,15,17,_binary '\0',_binary '\0'),(104,'00:00:56.941000','00:00:26.145000',2,5,33,41,_binary '\0',_binary '\0'),(105,'00:00:56.151000','00:00:51.651000',3,5,46,8,_binary '\0',_binary '\0'),(106,'00:00:26.156000','00:00:51.654000',4,5,23,20,_binary '\0',_binary '\0'),(107,'00:00:26.315000','00:00:52.615000',5,5,30,29,_binary '\0',_binary '\0'),(108,'00:00:45.612000','00:00:35.465000',6,5,39,32,_binary '\0',_binary '\0'),(109,'00:00:26.159000','00:09:59.999000',7,5,22,38,_binary '\0',_binary ''),(110,'00:00:26.156000','00:00:54.654000',8,5,40,18,_binary '\0',_binary '\0'),(111,'00:09:59.999000','00:09:59.999000',9,5,21,48,_binary '',_binary ''),(112,'00:09:59.999000','00:00:26.351000',10,5,3,16,_binary '',_binary '\0'),(118,'00:00:26.551000','00:00:51.613000',1,3,13,15,_binary '\0',_binary '\0'),(119,'00:00:23.415000','00:00:35.646000',2,3,11,19,_binary '\0',_binary '\0'),(120,'00:00:26.546000','00:00:56.456000',3,3,18,17,_binary '\0',_binary '\0'),(121,'00:09:59.999000','00:00:34.564000',4,3,16,12,_binary '',_binary '\0'),(122,'00:00:26.546000','00:00:45.565000',5,3,14,20,_binary '\0',_binary '\0'),(129,'00:00:26.546000','00:00:46.512000',1,2,5,2,_binary '\0',_binary '\0'),(130,'00:00:32.165000','00:00:45.561000',2,2,7,3,_binary '\0',_binary '\0'),(131,'00:00:30.546000','00:00:51.613000',3,2,4,6,_binary '\0',_binary '\0'),(132,'00:01:02.651000','00:00:56.545000',4,2,9,1,_binary '\0',_binary '\0'),(133,'00:01:25.654000','00:09:59.999000',5,2,10,8,_binary '\0',_binary ''),(140,'00:00:51.196000','00:00:20.616000',1,1,12,3,_binary '\0',_binary '\0'),(141,'00:00:59.592000','00:00:15.654000',2,1,2,4,_binary '\0',_binary '\0'),(142,'00:00:26.549000','00:00:59.454000',3,1,8,5,_binary '\0',_binary '\0'),(143,'00:00:15.915000','00:00:56.451000',4,1,10,11,_binary '\0',_binary '\0'),(144,'00:09:59.999000','00:00:23.654000',5,1,7,1,_binary '',_binary '\0'),(145,'00:00:26.595000','00:09:59.999000',6,1,6,9,_binary '\0',_binary ''),(146,NULL,NULL,1,4,12,13,_binary '\0',_binary '\0'),(147,NULL,NULL,2,4,19,15,_binary '\0',_binary '\0'),(148,NULL,NULL,3,4,11,16,_binary '\0',_binary '\0'),(149,NULL,NULL,4,4,18,20,_binary '\0',_binary '\0'),(150,NULL,NULL,5,4,17,14,_binary '\0',_binary '\0'),(151,'00:00:21.123000','00:00:35.061000',1,11,1,2,_binary '\0',_binary '\0'),(152,'00:00:23.216000','00:09:59.999000',1,12,1,2,_binary '\0',_binary ''),(154,'00:09:59.999000','00:00:19.156000',1,13,4,2,_binary '',_binary '\0'),(155,'00:00:30.516000','00:00:21.051000',2,13,3,1,_binary '\0',_binary '\0'),(156,'00:00:30.000000','00:00:30.000000',1,14,4,2,_binary '\0',_binary '\0'),(157,'00:00:30.000000','00:00:30.000000',2,14,3,1,_binary '\0',_binary '\0'),(158,'00:00:32.151000','00:00:20.546000',1,15,4,2,_binary '\0',_binary '\0'),(159,'00:00:32.459000','00:00:56.152000',2,15,1,3,_binary '\0',_binary '\0'),(160,'00:00:26.516000','00:09:59.999000',1,16,1,2,_binary '\0',_binary ''),(161,'00:00:32.165000','00:00:39.156000',2,16,3,4,_binary '\0',_binary '\0'),(162,'00:00:56.456000','00:00:18.565000',3,16,6,5,_binary '\0',_binary '\0');
 /*!40000 ALTER TABLE `tb_race` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -357,7 +357,7 @@ CREATE TABLE `tb_ranking` (
   KEY `FKgk776oasbxm96r3y8gspes7k7` (`pilot_id`),
   CONSTRAINT `FKbtge1gm9bo28ogfctbetynd29` FOREIGN KEY (`championship_id`) REFERENCES `tb_championship` (`id`),
   CONSTRAINT `FKgk776oasbxm96r3y8gspes7k7` FOREIGN KEY (`pilot_id`) REFERENCES `tb_pilot` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=542 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=660 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -366,7 +366,7 @@ CREATE TABLE `tb_ranking` (
 
 LOCK TABLES `tb_ranking` WRITE;
 /*!40000 ALTER TABLE `tb_ranking` DISABLE KEYS */;
-INSERT INTO `tb_ranking` VALUES (469,1,1,4),(470,2,1,10),(471,3,1,3),(472,4,1,1),(473,5,1,8),(474,6,1,6),(475,7,1,12),(476,8,1,11),(477,9,1,5),(478,10,1,2),(479,11,1,7),(480,12,1,9),(481,1,5,41),(482,2,5,17),(483,3,5,23),(484,4,5,40),(485,5,5,22),(486,6,5,30),(487,7,5,16),(488,8,5,32),(489,9,5,39),(490,10,5,8),(491,11,5,20),(492,12,5,29),(493,13,5,15),(494,14,5,18),(495,15,5,46),(496,16,5,33),(497,17,5,3),(498,18,5,21),(499,19,5,38),(500,20,5,48),(512,1,2,5),(513,2,2,4),(514,3,2,7),(515,4,2,3),(516,5,2,2),(517,6,2,6),(518,7,2,1),(519,8,2,9),(520,9,2,10),(521,10,2,8),(527,1,3,11),(528,2,3,14),(529,3,3,18),(530,4,3,13),(531,5,3,12),(532,6,3,19),(533,7,3,20),(534,8,3,15),(535,9,3,17),(536,10,3,16);
+INSERT INTO `tb_ranking` VALUES (469,1,1,4),(470,2,1,10),(471,3,1,3),(472,4,1,1),(473,5,1,8),(474,6,1,6),(475,7,1,12),(476,8,1,11),(477,9,1,5),(478,10,1,2),(479,11,1,7),(480,12,1,9),(481,1,5,41),(482,2,5,17),(483,3,5,23),(484,4,5,40),(485,5,5,22),(486,6,5,30),(487,7,5,16),(488,8,5,32),(489,9,5,39),(490,10,5,8),(491,11,5,20),(492,12,5,29),(493,13,5,15),(494,14,5,18),(495,15,5,46),(496,16,5,33),(497,17,5,3),(498,18,5,21),(499,19,5,38),(500,20,5,48),(512,1,2,5),(513,2,2,4),(514,3,2,7),(515,4,2,3),(516,5,2,2),(517,6,2,6),(518,7,2,1),(519,8,2,9),(520,9,2,10),(521,10,2,8),(527,1,3,11),(528,2,3,14),(529,3,3,18),(530,4,3,13),(531,5,3,12),(532,6,3,19),(533,7,3,20),(534,8,3,15),(535,9,3,17),(536,10,3,16),(542,1,11,1),(543,2,11,2),(545,1,12,1),(546,2,12,2),(611,1,13,2),(612,2,13,1),(613,3,13,3),(614,4,13,4),(618,1,14,1),(619,2,14,2),(620,3,14,3),(621,4,14,4),(646,1,15,2),(647,2,15,4),(648,3,15,1),(649,4,15,3),(653,1,16,5),(654,2,16,1),(655,3,16,3),(656,4,16,4),(657,5,16,6),(658,6,16,2);
 /*!40000 ALTER TABLE `tb_ranking` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -387,7 +387,7 @@ CREATE TABLE `tb_simple_position` (
   KEY `FKs7flt5hf8eic61wdu2liglk69` (`pilot_id`),
   CONSTRAINT `FK79ui6npg21ygsk1l0p2y54lwf` FOREIGN KEY (`championship_id`) REFERENCES `tb_championship` (`id`),
   CONSTRAINT `FKs7flt5hf8eic61wdu2liglk69` FOREIGN KEY (`pilot_id`) REFERENCES `tb_pilot` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -396,7 +396,7 @@ CREATE TABLE `tb_simple_position` (
 
 LOCK TABLES `tb_simple_position` WRITE;
 /*!40000 ALTER TABLE `tb_simple_position` DISABLE KEYS */;
-INSERT INTO `tb_simple_position` VALUES (1,2,4,11);
+INSERT INTO `tb_simple_position` VALUES (1,2,4,11),(2,2,13,1),(3,3,13,4),(4,1,13,2),(5,2,16,3),(6,1,16,2),(7,3,16,2);
 /*!40000 ALTER TABLE `tb_simple_position` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -416,7 +416,7 @@ CREATE TABLE `tb_simple_victory` (
   KEY `FKskhcs4fi3fm20agw5ajt591j3` (`pilot_id`),
   CONSTRAINT `FKfabxcslobhxhnxj2mqg5cer1p` FOREIGN KEY (`championship_id`) REFERENCES `tb_championship` (`id`),
   CONSTRAINT `FKskhcs4fi3fm20agw5ajt591j3` FOREIGN KEY (`pilot_id`) REFERENCES `tb_pilot` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -425,7 +425,7 @@ CREATE TABLE `tb_simple_victory` (
 
 LOCK TABLES `tb_simple_victory` WRITE;
 /*!40000 ALTER TABLE `tb_simple_victory` DISABLE KEYS */;
-INSERT INTO `tb_simple_victory` VALUES (1,4,11);
+INSERT INTO `tb_simple_victory` VALUES (1,4,11),(2,11,1),(3,11,2),(4,11,1),(5,16,4),(6,16,2),(7,16,2);
 /*!40000 ALTER TABLE `tb_simple_victory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -469,7 +469,7 @@ CREATE TABLE `tb_transaction` (
   PRIMARY KEY (`id`),
   KEY `FK7f3wtdpf61kpwpm1p7ygh2ccf` (`user_id`),
   CONSTRAINT `FK7f3wtdpf61kpwpm1p7ygh2ccf` FOREIGN KEY (`user_id`) REFERENCES `tb_user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -478,7 +478,7 @@ CREATE TABLE `tb_transaction` (
 
 LOCK TABLES `tb_transaction` WRITE;
 /*!40000 ALTER TABLE `tb_transaction` DISABLE KEYS */;
-INSERT INTO `tb_transaction` VALUES (1,'2023-12-02 17:19:40.000000',0,104.5,1),(2,'2023-12-02 17:19:40.000000',0,104.5,1),(3,'2023-12-02 17:19:40.000000',0,104.5,1),(4,'2023-12-02 17:19:40.000000',1,33,1),(5,'2023-12-02 17:19:40.000000',0,45,1),(6,'2023-12-02 17:21:55.427042',0,120,1),(7,'2023-12-02 17:22:47.545994',0,120,1),(8,'2023-12-02 17:22:48.453012',0,120,1),(9,'2023-12-02 17:22:48.981046',0,120,1),(10,'2023-12-02 17:22:51.613504',0,120,1),(11,'2023-12-02 17:22:51.756494',0,120,1),(12,'2023-12-02 17:22:51.907493',0,120,1),(13,'2023-12-02 17:22:52.054310',0,120,1),(14,'2023-12-02 17:22:52.364006',0,120,1),(15,'2023-12-02 17:25:50.430030',0,120,1),(16,'2023-12-02 17:31:08.076824',0,1,1),(17,'2023-12-02 17:31:34.338403',0,1,1),(18,'2023-12-02 17:31:38.948038',0,1,1),(19,'2023-12-02 17:36:09.086907',0,1,1),(20,'2023-12-02 17:36:45.499052',0,1,1),(21,'2023-12-02 17:38:07.131821',0,1,1),(22,'2023-12-02 17:38:26.411897',0,1000,1),(23,'2023-12-02 17:40:17.077293',1,125,1),(24,'2023-12-02 17:40:27.050385',1,406.5,1),(25,'2023-12-02 17:40:55.762519',1,2000,1),(26,'2023-12-02 17:41:11.530636',0,651,1),(27,'2023-12-02 17:41:49.514630',1,651,1),(29,'2023-12-02 17:55:34.563553',0,1,3),(30,'2023-12-02 17:55:41.456731',0,100,3),(31,'2023-12-02 17:55:47.289374',0,145,3),(32,'2023-12-02 17:55:51.961904',0,14,3),(33,'2023-12-02 17:55:56.970477',0,984,3),(34,'2023-12-02 17:56:03.450567',0,222,3),(35,'2023-12-02 17:56:13.882961',1,66,3),(36,'2023-12-02 17:56:20.416483',1,12,3),(37,'2023-12-02 17:56:25.488901',1,99,3),(38,'2023-12-02 19:23:06.713513',1,1289,3),(39,'2023-12-02 19:24:44.162455',0,120,3),(40,'2023-12-02 19:24:49.337159',0,110,3),(41,'2023-12-02 19:24:55.499076',0,160,3),(42,'2023-12-02 19:27:09.610587',0,125,3),(43,'2023-12-04 10:07:17.554525',2,10,3),(44,'2023-12-04 10:10:28.519454',2,10,3),(45,'2023-12-04 10:10:35.411922',2,10,3),(46,'2023-12-04 10:10:43.088307',2,10,3),(47,'2023-12-04 10:10:49.013324',2,10,3);
+INSERT INTO `tb_transaction` VALUES (1,'2023-12-02 17:19:40.000000',0,104.5,1),(2,'2023-12-02 17:19:40.000000',0,104.5,1),(3,'2023-12-02 17:19:40.000000',0,104.5,1),(4,'2023-12-02 17:19:40.000000',1,33,1),(5,'2023-12-02 17:19:40.000000',0,45,1),(6,'2023-12-02 17:21:55.427042',0,120,1),(7,'2023-12-02 17:22:47.545994',0,120,1),(8,'2023-12-02 17:22:48.453012',0,120,1),(9,'2023-12-02 17:22:48.981046',0,120,1),(10,'2023-12-02 17:22:51.613504',0,120,1),(11,'2023-12-02 17:22:51.756494',0,120,1),(12,'2023-12-02 17:22:51.907493',0,120,1),(13,'2023-12-02 17:22:52.054310',0,120,1),(14,'2023-12-02 17:22:52.364006',0,120,1),(15,'2023-12-02 17:25:50.430030',0,120,1),(16,'2023-12-02 17:31:08.076824',0,1,1),(17,'2023-12-02 17:31:34.338403',0,1,1),(18,'2023-12-02 17:31:38.948038',0,1,1),(19,'2023-12-02 17:36:09.086907',0,1,1),(20,'2023-12-02 17:36:45.499052',0,1,1),(21,'2023-12-02 17:38:07.131821',0,1,1),(22,'2023-12-02 17:38:26.411897',0,1000,1),(23,'2023-12-02 17:40:17.077293',1,125,1),(24,'2023-12-02 17:40:27.050385',1,406.5,1),(25,'2023-12-02 17:40:55.762519',1,2000,1),(26,'2023-12-02 17:41:11.530636',0,651,1),(27,'2023-12-02 17:41:49.514630',1,651,1),(29,'2023-12-02 17:55:34.563553',0,1,3),(30,'2023-12-02 17:55:41.456731',0,100,3),(31,'2023-12-02 17:55:47.289374',0,145,3),(32,'2023-12-02 17:55:51.961904',0,14,3),(33,'2023-12-02 17:55:56.970477',0,984,3),(34,'2023-12-02 17:56:03.450567',0,222,3),(35,'2023-12-02 17:56:13.882961',1,66,3),(36,'2023-12-02 17:56:20.416483',1,12,3),(37,'2023-12-02 17:56:25.488901',1,99,3),(38,'2023-12-02 19:23:06.713513',1,1289,3),(39,'2023-12-02 19:24:44.162455',0,120,3),(40,'2023-12-02 19:24:49.337159',0,110,3),(41,'2023-12-02 19:24:55.499076',0,160,3),(42,'2023-12-02 19:27:09.610587',0,125,3),(43,'2023-12-04 10:07:17.554525',2,10,3),(44,'2023-12-04 10:10:28.519454',2,10,3),(45,'2023-12-04 10:10:35.411922',2,10,3),(46,'2023-12-04 10:10:43.088307',2,10,3),(47,'2023-12-04 10:10:49.013324',2,10,3),(48,'2023-12-05 11:38:11.448166',0,1000,4),(49,'2023-12-05 11:38:14.101099',0,1000,4),(50,'2023-12-05 11:38:31.631156',0,1000,5),(51,'2023-12-05 11:38:34.309095',0,1000,5),(52,'2023-12-05 11:40:08.583199',0,1000,5),(53,'2023-12-05 11:40:25.919180',0,1000,4),(54,'2023-12-05 11:41:01.349750',0,1000,4),(55,'2023-12-05 11:41:09.980463',0,1000,5),(56,'2023-12-05 11:41:28.421588',2,1000,5),(57,'2023-12-05 11:41:38.805083',2,1000,4),(58,'2023-12-05 11:41:49.983458',0,1000,3),(59,'2023-12-05 11:42:02.133564',2,1000,3),(60,'2023-12-05 11:43:21.884032',3,1500,5),(61,'2023-12-05 11:43:21.888083',3,1500,3),(62,'2023-12-05 11:44:01.293489',2,1000,4),(63,'2023-12-05 11:44:14.404986',2,1000,5),(64,'2023-12-05 11:44:27.372427',2,1000,3),(65,'2023-12-05 11:45:03.383396',3,3000,5),(66,'2023-12-05 11:46:35.621866',2,1000,4),(67,'2023-12-05 11:47:18.084866',2,1000,5),(68,'2023-12-05 11:47:25.068962',0,35,3),(69,'2023-12-05 11:47:41.612349',2,1000,3),(70,'2023-12-05 12:02:21.831812',3,1500,4),(71,'2023-12-05 12:02:21.838333',3,1500,3),(72,'2023-12-05 12:46:28.205037',2,500,4),(73,'2023-12-05 12:46:45.235595',2,500,5),(74,'2023-12-05 12:47:04.900274',2,200,3),(75,'2023-12-05 12:51:11.326578',3,1200,3),(76,'2023-12-05 12:57:30.956638',2,1000,5),(77,'2023-12-05 12:57:53.955072',2,1000,4),(78,'2023-12-05 12:58:11.337041',2,1000,3),(79,'2023-12-05 12:58:26.152690',2,200,4),(80,'2023-12-05 13:06:16.090769',3,1000,5),(81,'2023-12-05 13:06:16.097876',3,1000,4),(82,'2023-12-05 13:06:16.103956',3,1000,3),(83,'2023-12-05 13:06:16.108603',3,200,4),(84,'2023-12-05 13:09:37.883886',2,435,4),(85,'2023-12-05 13:09:48.977241',2,452,4),(86,'2023-12-05 13:09:59.040182',2,242,4),(87,'2023-12-05 13:10:11.249177',2,142,4),(88,'2023-12-05 13:10:25.449548',2,156,4),(89,'2023-12-05 13:10:41.904466',2,142,5),(90,'2023-12-05 13:10:50.104718',2,452,5),(91,'2023-12-05 13:11:03.712689',2,425,5),(92,'2023-12-05 13:11:14.088630',2,102,5),(93,'2023-12-05 13:11:23.232529',2,132,5),(94,'2023-12-05 13:11:33.537123',2,242,3),(95,'2023-12-05 13:11:47.872665',2,345,3),(96,'2023-12-05 13:11:59.417113',2,42,3),(97,'2023-12-05 13:12:12.840098',2,432,3),(98,'2023-12-05 13:12:28.857676',2,453,3),(99,'2023-12-05 13:13:36.805621',3,676,3),(100,'2023-12-05 13:13:36.822299',3,741,3);
 /*!40000 ALTER TABLE `tb_transaction` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -506,7 +506,7 @@ CREATE TABLE `tb_user` (
   UNIQUE KEY `UK_869sa3rebuf3nm0d4jwxdtouk` (`cpf`),
   UNIQUE KEY `UK_4vih17mube9j7cqyjlfbcrk4m` (`email`),
   UNIQUE KEY `UK_qi5yr54j76lu2meatpwefocym` (`phone_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -515,7 +515,7 @@ CREATE TABLE `tb_user` (
 
 LOCK TABLES `tb_user` WRITE;
 /*!40000 ALTER TABLE `tb_user` DISABLE KEYS */;
-INSERT INTO `tb_user` VALUES (1,_binary '\0',0.00,'1900-01-01','deleted_1','deleted_1','deleted_1',2,'deleted_1','deleted_1','deleted_1',2),(2,_binary '',0.00,'2004-02-27','14848428683','pdroeofiarabelo@gmail.com','Pedro',0,'Rabelo','$2a$10$YV1aVK1lKNVeQ0eBschXr.Qs9OBrWvWez9Sv36TiXvmwsLR/KjYr.','41999299999',0),(3,_binary '',515.00,'2004-02-27','14848328683','pdroesofiarabelo@gmail.com','Pedro',0,'Rabelo','$2a$10$YV1aVK1lKNVeQ0eBschXr.Qs9OBrWvWez9Sv36TiXvmwsLR/KjYr.','41999999999',1);
+INSERT INTO `tb_user` VALUES (1,_binary '',0.00,'1900-01-01','deleted_1','deleted_1','deleted_1',2,'deleted_1','deleted_1','deleted_1',2),(2,_binary '',0.00,'2004-02-27','14848428683','pdroeofiarabelo@gmail.com','Pedro',0,'Rabelo','$2a$10$YV1aVK1lKNVeQ0eBschXr.Qs9OBrWvWez9Sv36TiXvmwsLR/KjYr.','41999299999',0),(3,_binary '',2403.00,'2004-02-27','14848328683','pdroesofiarabelo@gmail.com','Pedro',0,'Rabelo','$2a$10$YV1aVK1lKNVeQ0eBschXr.Qs9OBrWvWez9Sv36TiXvmwsLR/KjYr.','41999999999',1),(4,_binary '',573.00,'1980-10-18','03962197648','michelexrrabelo@gmail.com','Michele',1,'Rocha','$2a$10$ZVpFjk.V0y.HWaSYK5vjK.5WhGy0SaP9Wt75aCru8ox13gFICJ21e','41997276372',0),(5,_binary '',3747.00,'2005-01-04','14848337674','sofiarabelo@gmail.com','Sofia',1,'Rabelo','$2a$10$FzWJQJBDu6t8AdKQ4VqnKufstNT3Oo2qlOkTTha8YEZRX6hdROAFK','41999999992',0);
 /*!40000 ALTER TABLE `tb_user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -528,4 +528,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-04 10:18:19
+-- Dump completed on 2023-12-05 13:17:36

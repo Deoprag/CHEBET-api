@@ -1,3 +1,4 @@
+use db_chebet;
 ----------------------------------------------------------------------------------------------------------------------
 -- PROCEDURE - UpdateUserBalance																					--
 -- Atualiza o campo balance da tb_user																				--
@@ -37,6 +38,15 @@ BEGIN
     CALL UpdateUserBalance(NEW.user_id);
 END;
 // DELIMITER ;
+DELIMITER //
+CREATE TRIGGER tr_after_delete_transaction
+AFTER DELETE
+ON tb_transaction FOR EACH ROW
+BEGIN
+    CALL UpdateUserBalance(OLD.user_id);
+END;
+//
+DELIMITER ;
 
 ----------------------------------------------------------------------------------------------------------------------
 -- PROCEDURE - SoftDeleteUser																						--
@@ -86,6 +96,8 @@ BEGIN
   DECLARE cur_championship CURSOR FOR SELECT id FROM tb_championship WHERE id = championship_id_param;
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET cur_championship_done = TRUE;
   OPEN cur_championship;
+  
+  DELETE FROM tb_race WHERE championship_id = championship_id_param;
 
   -- Inicie a leitura dos campeonatos
   read_championship: LOOP
@@ -114,12 +126,14 @@ BEGIN
       DELETE FROM temp_championship_pilots WHERE pilots_id = pilot2_id;
 
       -- Insere os dados na tb_race
-      INSERT INTO tb_race (race_number, pilot1_id, pilot2_id, championship_id)
+      INSERT INTO tb_race (race_number, pilot1_id, pilot2_id, championship_id, pilot1_broke, pilot2_broke)
       SELECT 
         COALESCE(MAX(r.race_number), 0) + 1,
         pilot1_id,
         pilot2_id,
-        current_championship_id
+        current_championship_id,
+        false,
+        false
       FROM tb_race r
       WHERE r.championship_id = current_championship_id;
 
@@ -152,9 +166,9 @@ BEGIN
   SELECT
     championship_id,
     pilot_id,
-    RANK() OVER (PARTITION BY championship_id ORDER BY race_time) AS position
+    RANK() OVER (PARTITION BY championship_id ORDER BY race_time, pilot_id) AS position
   FROM (
-    SELECT DISTINCT
+    SELECT
       r.championship_id,
       r.pilot1_id AS pilot_id,
       COALESCE(r.pilot1_time, '23:59:59.999') AS race_time
@@ -162,11 +176,10 @@ BEGIN
       tb_race r
     WHERE
       r.championship_id = championship_id_param
-      AND NOT EXISTS (SELECT 1 FROM tb_pilot p WHERE p.id = r.pilot1_id AND r.pilot1_broke = true)
-
+      
     UNION ALL
 
-    SELECT DISTINCT
+    SELECT
       r.championship_id,
       r.pilot2_id AS pilot_id,
       COALESCE(r.pilot2_time, '23:59:59.999') AS race_time
@@ -174,7 +187,44 @@ BEGIN
       tb_race r
     WHERE
       r.championship_id = championship_id_param
-      AND NOT EXISTS (SELECT 1 FROM tb_pilot p WHERE p.id = r.pilot2_id AND r.pilot2_broke = true)
+      
   ) AS subquery;
 END 
 // DELIMITER ;
+
+DROP PROCEDURE GetAverageTime;
+DELIMITER //
+
+CREATE PROCEDURE GetAverageTime(IN championship_id_param INT)
+BEGIN
+  DECLARE total_seconds_avg INT;
+
+  CREATE TEMPORARY TABLE IF NOT EXISTS temp_times (
+    total_seconds INT
+  );
+
+  -- Calcula o tempo médio para pilot1
+  INSERT INTO temp_times
+  SELECT COALESCE(SUM(TIME_TO_SEC(TIMEDIFF(pilot1_time, '00:00:00'))), 0) AS total_seconds
+  FROM tb_race
+  WHERE pilot1_broke = false AND championship_id = championship_id_param;
+
+  -- Calcula o tempo médio para pilot2
+  INSERT INTO temp_times
+  SELECT COALESCE(SUM(TIME_TO_SEC(TIMEDIFF(pilot2_time, '00:00:00'))), 0) AS total_seconds
+  FROM tb_race
+  WHERE pilot2_broke = false AND championship_id = championship_id_param;
+
+  -- Calcula a média total
+  SELECT COALESCE(AVG(total_seconds), 0)
+  INTO total_seconds_avg
+  FROM temp_times;
+
+  -- Retorna o resultado
+  SELECT SEC_TO_TIME(total_seconds_avg) AS average_time;
+
+  -- Limpa a tabela temporária
+  DROP TEMPORARY TABLE IF EXISTS temp_times;
+END //
+
+DELIMITER ;
